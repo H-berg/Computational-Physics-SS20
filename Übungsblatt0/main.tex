@@ -3,15 +3,54 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
-\newpage
 
-\section{Aufgabe0: Verständnisfragen}
+\section*{Aufgabe0: Verständnisfragen}
 
-\section{Aufgabe1: Distributivgesetz in der Floating-Arithmetik}
+\section*{Aufgabe1: Distributivgesetz in der Floating-Arithmetik}
 
-\section{Aufgabe2: Rundungsfehler}
+\section*{Aufgabe2: Rundungsfehler}
 
-\section{Aufgabe3: Stabilität}
+\section*{Aufgabe3: Stabilität}
+Anfangswertproblem:
+\begin{align*}
+  \dot{y}(t)&=-y(t), \\ y(0)&=1 \\
+  \intertext{Analytische Lösung:} y(t)&=e^{t}
+\end{align*}
 
+\subsection*{a)}
+Anfangswerte:
+\begin{align*}
+  y_0&=1\\
+  \intertext{und für das symmetrische Euler-Verfahren zusätzlich}
+  y_1&=e^{-\Delta t}
+\end{align*}
+Für eine Schrittweite von $\Delta t = 0,1$ ergibt sich auf dem Intervall [0, 10] folgene Funktion als Lösung des Anfangswertproblems.
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plot3a.pdf}
+    \caption{Aufgabe 3a: Lösung des AWP mittels Euler-Verfahrens und symmetrischen Euler-Verfahrens und rauschfreien Anfangswerten.}
+    \label{fig:plot3a}
+\end{figure}
+\FloatBarrier
+Für die gegebenen Startwerte ist die Lösung des Anfangswertproblems sowohl mittels Euler-Verfahrens als auch mittels symmetrischen Euler Verfahrens sehr genau, da kaum ein Unterschied zwischen den Funktionen erkennbar ist.
+
+\subsection*{b)}
+Anfangswerte für das Euler-Verfahren:
+\begin{align*}
+  y_0&=1-\Delta t\\
+  \intertext{Anfangswerte für das symmetrische Euler-Verfahren:}\\
+  y_0&=1\\
+  y_1&=y_0-\Delta t
+\end{align*}
+Mit der gleichen Schrittweite wie in a) ergibt sich mit den angegebenen Startwerten folgene Funktion als Lösung des Anfangswertproblems.
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plot3b.pdf}
+    \caption{Aufgabe 3b: Lösung des AWP mittels Euler Verfahrens und symmetrischen Euler-Verfahrens und rauschbelasteten Anfangswerten.}
+    \label{fig:plot3a}
+\end{figure}
+\FloatBarrier
+Hier ist deutlich erkennbar, dass das Rauschen zu einer Instabilität des symmetrischen Euler-Verfahrens führt. Die Lösung dieses Verfahrens weicht auf dem gegebenen Intervall deutlich stärker von der analytischen Lösung ab, als die Lösung, welche durch das symmetrische Euler-Verfahren bestimmt wurde. Damit wurde anhand eines Beispiels gezeigt, dass das symmetrische Euler-Verfahren instabil gegenüber kleinen Fehlern (hier in der Größenordnung der Schrittweite) in den Anfangswerten ist.
 \end{document}
