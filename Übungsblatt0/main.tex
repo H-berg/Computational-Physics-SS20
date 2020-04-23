@@ -6,7 +6,7 @@
 
 \section*{Aufgabe 0: Verständnisfragen}
 
-\section*{Aufgabe 1: Distributivgesetz in der Floating-Arithmetik}
+\section*{Aufgabe 1: Distributivgesetz in der Floating-Point-Arithmetik}
 Z.z.:
 \begin{equation*}
   (a \oplus b) \odot c = a \odot c \oplus b \odot c
@@ -41,19 +41,19 @@ a) für große $x \gg 1$
   \frac{1}{\sqrt{x}}-\frac{1}{\sqrt{x+1}} &= \frac{1}{\sqrt{x+1} \cdot \sqrt{x}} \cdot \left(\sqrt{x+1} - \sqrt{x}\right) \\
                                           &= \frac{1}{\sqrt{x+1} \cdot \sqrt{x}} \cdot \frac{1}{\sqrt{x+1}+\sqrt{x}}
 \end{align*}
-
+\noindent
 b) für kleine $x \ll 1$
 \begin{align*}
   \frac{1-\cos \left(x \right)}{\sin \left(x \right)} &= \frac{2 \sin^2 \left(\frac{x}{2}\right)}{2 \sin \left(\frac{x}{2}\right) \cos \left(\frac{x}{2}\right)} \\
                                                       &= \tan \left(\frac{x}{2}\right)
 \end{align*}
-
+\noindent
 c) für kleine $\delta \ll 1$
 \begin{align*}
   \sin \left(x + \delta \right) - \sin \left(x \right) &= \sin \left(x + \frac{\delta}{2} + \frac{\delta}{2}\right) - \sin \left(x + \frac{\delta}{2} - \frac{\delta}{2} \right) \\
                                                        &= 2 \cos \left(x + \frac{\delta}{2}\right) \sin \left(\frac{\delta}{2}\right)
 \end{align*}
-
+\noindent
 Die Ergebnisse der direkten und verbesserten Berechnung befinden sich in Abbildung \ref{fig:plot2a} für Aufgabenteil a), in  Abbildung \ref{fig:plot2b}
 für Aufgabenteil b) und in  Abbildung \ref{fig:plot2c} für Teil c).
 
@@ -68,24 +68,19 @@ für Aufgabenteil b) und in  Abbildung \ref{fig:plot2c} für Teil c).
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{a_2_b.pdf}
-    \caption{Aufgabe 2b: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $x$.}
+    \caption{Aufgabe 2b: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr große Werte von $x$.}
     \label{fig:plot2b}
 \end{figure}
 \FloatBarrier
 
+\FloatBarrier
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{a_2_c.pdf}
-    \caption{Aufgabe 2c: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $x$.}
+    \caption{Aufgabe 2c: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $\delta$.}
     \label{fig:plot2c}
 \end{figure}
 \FloatBarrier
-
-Bei der Betrachtung der relativen Fehler fällt deutlich der Unterschied zwischen der ersten und der zweiten
-und dritten Berechnung auf. Während der relative Fehler bei Aufgabenteil b) und c) zunächst erst sehr groß ist,
-nimmt er dann jedoch schnell ab und wir sehr klein, wenn auchg mit einigen Schwankungen. Bei Aufgabenteil a)
-wird der Fehler jedoch zunehmend immer größer.
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{a_2_rel_err.pdf}
@@ -93,6 +88,12 @@ wird der Fehler jedoch zunehmend immer größer.
     \label{fig:plot2_err}
 \end{figure}
 \FloatBarrier
+\noindent
+Bei der Betrachtung der relativen Fehler fällt deutlich der Unterschied zwischen der ersten und der zweiten
+und dritten Berechnung auf. Während der relative Fehler bei Aufgabenteil b) und c) zunächst erst sehr groß ist,
+nimmt er dann jedoch schnell ab und wird kleiner, wenn auch mit einigen Schwankungen. Bei a) ergibt sich ein ganz
+anderer Verlauf, was daran liegt, das der relative Fehler sehr klein und nicht mehr für den Computer berechenbar ist. Dies ist auch in Abbildung \ref{fig:plot2a}
+ersichtlich.
 
 \section*{Aufgabe 3: Stabilität}
 Anfangswertproblem:
