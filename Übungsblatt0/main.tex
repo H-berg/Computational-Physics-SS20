@@ -7,7 +7,27 @@
 \section*{Aufgabe0: Verständnisfragen}
 
 \section*{Aufgabe1: Distributivgesetz in der Floating-Arithmetik}
+\begin{equation*}
+  \text{zz. }(a \oplus b) \odot c = a \odot c \oplus b \odot c
+\end{equation*}
+\noindent
+Wähle passend zu $t=2$ (Mantissenlänge) und $l=1$ (Exponentenlänge) $a$, $b$ und $c$,
+zum Beispiel: $a=\num{0,43e2}$, $b=\num{0,87e1}$ und $c=\num{0,13e3}$
 
+\begin{align*}
+\begin{rcases}
+  (\num{0,43e2} + \num{0,87e1}) \cdot \num{0,13e3}
+  = \num{0,52e2} \cdot \num{0,13e3}
+  = \num{0,68e4} \\
+  (\num{0,43e2} \cdot \num{0,13e3}) + \num{0,87e1} \cdot \num{0,13e3}
+  = \num{0,56e4} \cdot \num{0,11e4}
+  = \num{0,67e4}
+\end{rcases}
+{\ne}
+\end{align*}
+\noindent
+Folglich ist das Distributivgesetz  nicht erfüllt:
+$\implies (a \oplus b) \odot c \ne a \odot c \oplus b \odot c$
 \section*{Aufgabe2: Rundungsfehler}
 
 \section*{Aufgabe3: Stabilität}
