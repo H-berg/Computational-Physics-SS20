@@ -1,0 +1,3 @@
+- Die Aufgaben dürfen nicht in einzelnen Ordnern sein, sonst funktioniert der Makefile nicht
+- Die Übungsblätter haben je einzelne Ordnern
+- möglicherweise sollten wir auch die .txt-Dateien ignoren
