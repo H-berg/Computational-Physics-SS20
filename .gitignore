@@ -1,0 +1,12 @@
+
+.DS_STORE
+build
+main.toc
+main.aux
+main.bbl
+main.bcf
+main.blg
+main.log
+main.run.xml
+texput.log
+*.pdf

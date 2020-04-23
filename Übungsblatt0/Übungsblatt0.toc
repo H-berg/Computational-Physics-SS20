@@ -1,0 +1,7 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {german}
+\contentsline {section}{\numberline {1}Aufgabe0: Verständnisfragen}{3}{section.1}
+\contentsline {section}{\numberline {2}Aufgabe1: Distributivgesetz in der Floating-Arithmetik}{3}{section.2}
+\contentsline {section}{\numberline {3}Aufgabe2: Rundungsfehler}{3}{section.3}
+\contentsline {section}{\numberline {4}Aufgabe3: Stabilität}{3}{section.4}
