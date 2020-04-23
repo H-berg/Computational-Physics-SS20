@@ -6,12 +6,12 @@ plota.pdf: plota.py eulera.txt
 plotb.pdf: plotb.py eulerb.txt
 	python plotb.py
 
-eulera.txt: main.cpp
-	g++ main.cpp -o euler
+eulera.txt: Aufgabe3.cpp
+	g++ Aufgabe3.cpp -o euler
 	./euler
 
-eulerb.txt: main.cpp
-	g++ main.cpp -o euler
+eulerb.txt: Aufgabe3.cpp
+	g++ Aufgabe3.cpp -o euler
 	./euler
 
 clean:
