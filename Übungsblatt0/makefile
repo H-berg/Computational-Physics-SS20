@@ -1,16 +1,12 @@
-all: plota.pdf plotb.pdf
+all: plot3a.pdf plot3b.pdf
 
-plota.pdf: plota.py eulera.txt
-	python plota.py
+plot3a.pdf: plot3a.py data3a.txt
+	python plot3a.py
 
-plotb.pdf: plotb.py eulerb.txt
-	python plotb.py
+plot3b.pdf: plot3b.py data3b.txt
+	python plot3b.py
 
-eulera.txt: Aufgabe3.cpp
-	g++ Aufgabe3.cpp -o euler
-	./euler
-
-eulerb.txt: Aufgabe3.cpp
+data3a.txt data3b: Aufgabe3.cpp
 	g++ Aufgabe3.cpp -o euler
 	./euler
 
