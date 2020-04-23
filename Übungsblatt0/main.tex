@@ -4,11 +4,12 @@
 
 \maketitle
 
-\section*{Aufgabe0: Verständnisfragen}
+\section*{Aufgabe 0: Verständnisfragen}
 
-\section*{Aufgabe1: Distributivgesetz in der Floating-Arithmetik}
+\section*{Aufgabe 1: Distributivgesetz in der Floating-Arithmetik}
+Z.z.:
 \begin{equation*}
-  \text{zz. }(a \oplus b) \odot c = a \odot c \oplus b \odot c
+  (a \oplus b) \odot c = a \odot c \oplus b \odot c
 \end{equation*}
 \noindent
 Wähle passend zu $t=2$ (Mantissenlänge) und $l=1$ (Exponentenlänge) $a$, $b$ und $c$,
@@ -16,11 +17,11 @@ zum Beispiel: $a=\num{0,43e2}$, $b=\num{0,87e1}$ und $c=\num{0,13e3}$
 
 \begin{align*}
 \begin{rcases}
-  (\num{0,43e2} + \num{0,87e1}) \cdot \num{0,13e3}
-  = \num{0,52e2} \cdot \num{0,13e3}
+  (\num{0,43e2} \oplus \num{0,87e1}) \odot \num{0,13e3}
+  = \num{0,52e2} \odot \num{0,13e3}
   = \num{0,68e4} \\
-  (\num{0,43e2} \cdot \num{0,13e3}) + \num{0,87e1} \cdot \num{0,13e3}
-  = \num{0,56e4} \cdot \num{0,11e4}
+  \num{0,43e2} \odot \num{0,13e3} \oplus \num{0,87e1} \odot  \num{0,13e3}
+  = \num{0,56e4} \oplus \num{0,11e4}
   = \num{0,67e4}
 \end{rcases}
 {\ne}
@@ -28,9 +29,72 @@ zum Beispiel: $a=\num{0,43e2}$, $b=\num{0,87e1}$ und $c=\num{0,13e3}$
 \noindent
 Folglich ist das Distributivgesetz  nicht erfüllt:
 $\implies (a \oplus b) \odot c \ne a \odot c \oplus b \odot c$
-\section*{Aufgabe2: Rundungsfehler}
 
-\section*{Aufgabe3: Stabilität}
+\section*{Aufgabe 2: Rundungsfehler}
+Auslöschung tritt auf, wenn $f(x) \approx 0$. Vermeiden lässt sich Auslöschung durch Umformung.
+Der relative Fehler zwischen direktem und verbesserten Wert berechnet sich gemäß:
+\begin{equation*}
+  \frac{\vert x - \bar{x} \vert}{\vert x \vert}
+\end{equation*}
+a) für große $x \gg 1$
+\begin{align*}
+  \frac{1}{\sqrt{x}}-\frac{1}{\sqrt{x+1}} &= \frac{1}{\sqrt{x+1} \cdot \sqrt{x}} \cdot \left(\sqrt{x+1} - \sqrt{x}\right) \\
+                                          &= \frac{1}{\sqrt{x+1} \cdot \sqrt{x}} \cdot \frac{1}{\sqrt{x+1}+\sqrt{x}}
+\end{align*}
+
+b) für kleine $x \ll 1$
+\begin{align*}
+  \frac{1-\cos \left(x \right)}{\sin \left(x \right)} &= \frac{2 \sin^2 \left(\frac{x}{2}\right)}{2 \sin \left(\frac{x}{2}\right) \cos \left(\frac{x}{2}\right)} \\
+                                                      &= \tan \left(\frac{x}{2}\right)
+\end{align*}
+
+c) für kleine $\delta \ll 1$
+\begin{align*}
+  \sin \left(x + \delta \right) - \sin \left(x \right) &= \sin \left(x + \frac{\delta}{2} + \frac{\delta}{2}\right) - \sin \left(x + \frac{\delta}{2} - \frac{\delta}{2} \right) \\
+                                                       &= 2 \cos \left(x + \frac{\delta}{2}\right) \sin \left(\frac{\delta}{2}\right)
+\end{align*}
+
+Die Ergebnisse der direkten und verbesserten Berechnung befinden sich in Abbildung \ref{fig:plot2a} für Aufgabenteil a), in  Abbildung \ref{fig:plot2b}
+für Aufgabenteil b) und in  Abbildung \ref{fig:plot2c} für Teil c).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a_2_a.pdf}
+    \caption{Aufgabe 2a: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $x$.}
+    \label{fig:plot2a}
+\end{figure}
+
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a_2_b.pdf}
+    \caption{Aufgabe 2b: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $x$.}
+    \label{fig:plot2b}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a_2_c.pdf}
+    \caption{Aufgabe 2c: Vergleich der direkten Berechnung und der verbesserten Berechung für sehr kleine Werte von $x$.}
+    \label{fig:plot2c}
+\end{figure}
+\FloatBarrier
+
+Bei der Betrachtung der relativen Fehler fällt deutlich der Unterschied zwischen der ersten und der zweiten
+und dritten Berechnung auf. Während der relative Fehler bei Aufgabenteil b) und c) zunächst erst sehr groß ist,
+nimmt er dann jedoch schnell ab und wir sehr klein, wenn auchg mit einigen Schwankungen. Bei Aufgabenteil a)
+wird der Fehler jedoch zunehmend immer größer.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a_2_rel_err.pdf}
+    \caption{Aufgabe 2: Vergleich der relativen Fehler für die Aufgabenteile a) bis c).}
+    \label{fig:plot2_err}
+\end{figure}
+\FloatBarrier
+
+\section*{Aufgabe 3: Stabilität}
 Anfangswertproblem:
 \begin{align*}
   \dot{y}(t)&=-y(t), \\ y(0)&=1 \\
