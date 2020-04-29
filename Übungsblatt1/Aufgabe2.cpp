@@ -39,6 +39,7 @@ int main(){
   f.flush();
   f.close();
 
+  //für den Plot werden auch noch einmal x- und y-Werte abgespeichert
   f.open("data2a.txt");
   f << "# x y \n";
   for(int i = 0; i<10; i++){

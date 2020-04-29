@@ -4,4 +4,70 @@
 
 \maketitle
 
+\section*{Aufgabe1}
+
+\section*{Aufgabe2: Ausgleichsrechnung}
+
+Gegeben seien die folgenden (x, y)-Datenpunkte:
+\FloatBarrier
+\begin{table}[h]
+    \centering
+    \begin{tabular}{S S S S S S S S S S S}
+      \toprule
+        \textbf{x} | & 0 & 2,5 & -6,3 & 4 & -3,2 & 5,3 & 10,1 & 9,5 & -5,4 & 12,7 \\
+      \midrule
+        \textbf{y} | & 4 & 4,3 & -3,9 & 6,5 & 0,7 & 8,6 & 13 & 9,9 & -3,6 & 15,1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\noindent
+Für diese soll eine Ausgleichsgerade
+\begin{align*}
+  y(x)&=mx\,+\,n \\
+\intertext{berechnet werden, welche den quadratischen Fehler}\\
+  R& = \sum_i(m\, x_i \, +\, n \, -\, y_i)^2\\
+\end{align*}
+minimiert.
+
+\subsection*{a) Formulierung des überbestimmten Gleichungssystems}
+
+R soll minimiert werden
+\begin{align*}
+  \vec{0} \stackrel{!}{=}\vec{\nabla}_{m,n}\cdot R &=\left(\begin{array}{c} \sum_i 2(mx_i+n-y_i)x_i \\ \sum_i 2(mx_i+n-y_i) \end{array}\right)\\ \\
+  \Leftrightarrow \sum_i(m x_i + n) & = \sum_i y_i \\
+\end{align*}
+Somit lautet das überbestimmte Gleichungssystem
+\begin{equation*}
+  \Rightarrow \underbrace{\left(\vec{x} \quad  \vec{1} \right)}_{A}\underbrace{\left(\begin{array}{c} m \\ n \end{array}\right)}_{\vec{n}} = \vec{y} \qquad .
+\end{equation*}
+\noindent
+Wobei $\vec{1}$ ein Vektor ist, welcher nur Einsen beinhaltet und die gleiche Dimension wie $\vec{x}$ hat. Somit handelt es sich bei A um eine $10\times 2$ - Matrix.
+
+\subsection*{b) Überführung in ein quadratisches Problem}
+
+Mit der Matrix $P = A^{T}A$ kann das Systen folgendermaßen in ein quadratisches Gleichungssystem überführt werden:
+\begin{align*}
+  A\,\vec{n}&=\vec{y} \qquad |\cdot A^{T} \\
+\Leftrightarrow  P\,\vec{n}&=A^{T}\,\vec{b}
+\end{align*}
+
+\subsection*{c) Lösen des Gleichungssystems}
+Das symmetrische Problem kann nun mittels einer LU-Zerlegung gelöst werden (siehe Aufgabe2.cpp).
+Für die Steigung $m$ und den y-Achsenabschnitt $n$ ergeben sich die Werte
+\begin{align*}
+  m&=0.959951\\
+  n&=2.65694
+\end{align*}
+
+\subsection*{d) Graphische Darstellung der Ausgleichsgeraden}
+
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plot2d.pdf}
+    \caption{Aufgabe 2d: Ausgleichsgerade mit der Steigung $m=0.959951$ und dem y-Achsenabschnitt $n=2.65694$}
+    \label{fig:plot2b}
+\end{figure}
+\FloatBarrier
+
 \end{document}
