@@ -6,6 +6,140 @@
 
 \section*{Aufgabe1}
 
+\subsection*{a)}
+Die Basen deuten auf ein hexagonales Kristallsystem hin.
+
+\subsection*{b)}
+
+Geben sind drei Basis-Vektoren $\vec{a_1}$, $\vec{a_2}$ und $\vec{a_3}$, die
+zusammen die Matrix $A = \biggl(\vec{a_1}\;\vec{a_2}\;\vec{a_3}\biggr)$ ergeben:
+
+\begin{equation*} %added with Mathpix Snipping-Tool
+  \vec{a}_{1}=\left(\begin{array}{c}
+\frac{1}{2} \\
+\frac{\sqrt{3}}{2} \\
+0
+\end{array}\right) ; \quad \vec{a}_{2}=\left(\begin{array}{c}
+-\frac{1}{2} \\
+\frac{\sqrt{3}}{2} \\
+0
+\end{array}\right) ; \quad \vec{a}_{3}=\left(\begin{array}{l}
+0 \\
+0 \\
+1
+\end{array}\right)
+\implies
+A =
+\left(\begin{array}{rrr}
+  \frac{1}{2}         & -\frac{1}{2}         & 0 \\
+  \frac{\sqrt{3}}{2}  & \frac{\sqrt{3}}{2}  & 0 \\
+  0                   & 0                   & 1 \\
+\end{array}\right)
+\end{equation*}
+
+\noindent
+Eine Fehlstelle befindet sich bei $\vec{x}=(2,0,2)^{T}$ %added with Mathpix Snipping-Tool
+und es sollen nun die Koordinaten $\vec{x'}$ bezüglich der Basen $\vec{a_1}$, $\vec{a_2}$ und $\vec{a_3}$
+bestimmten werden. Dazu wird folgendes GLS mit Bibliothek $\textit{Eigen}$ gelöst:
+
+\begin{equation*}
+  A\vec{x'} = \vec{x}
+\end{equation*}
+
+\noindent
+wobei die Matrix $A$ mit $\textit{Eigen:PartialPivLu}$ zerlegt wird: $A=PLU$ (LU-Zerlegung).
+Bei der Zerlegung ergeben sich eine Permutations-Matrix $P$, eine Lower-triangular-Matrix
+$L$ und eine Upper-triangular-Matrix $U$:
+
+\begin{equation*}
+  P_A =
+  \left(\begin{array}{rrr}
+    0 & 1 & 0 \\
+    1 & 0 & 0 \\
+    0 & 0 & 1 \\
+  \end{array}\right),
+  \quad
+  L_A =
+  \left(\begin{array}{rrr}
+    1       &  0 & 0 \\
+    0.57735 &  1 & 0 \\
+    0       &  0 & 1 \\
+  \end{array}\right),
+  \quad
+  U_A =
+  \left(\begin{array}{rrr}
+  0.866025 & 0.866025 & 0 \\
+         0 &       -1 & 0 \\
+         0 &        0 & 1 \\
+  \end{array}\right)
+\end{equation*}
+
+\noindent
+Somit erhalten wir von der $\textit{solve}$-Funktion
+folgende Koordinaten:
+
+\begin{equation*}
+  \vec{x'} = (2,-2,2)^T
+\end{equation*}
+
+\subsection*{c)}
+Erneuert sollen zunächst die Koordinaten $\vec{y'}$ einer Fehlstelle bei
+$\vec{y}=(1,2 \sqrt{3}, 3)^{T}$ %added with Mathpix Snipping-Tool
+bestimmt werden:
+
+\begin{equation*}
+  \vec{y'} = (3,1,3)^T
+\end{equation*}
+
+\noindent
+Die LU-Zerlegung von $A=PLU$ kann als Zwischenergebnis benutzt werden, sodass
+nur mittels der $\textit{solve}$-Funktion das LGS gelöst werden kann.
+
+\subsection*{d)}
+
+Erneuert wird eine LU-Zerlegung gemacht, allerdings mit der Matrix
+$B = \biggl(\vec{a_3}\;\vec{a_2}\;\vec{a_1}\biggr) =
+\left(\begin{array}{rrr}
+  0  & \frac{1}{2}         & -\frac{1}{2}       \\
+  0  & \frac{\sqrt{3}}{2}  & \frac{\sqrt{3}}{2} \\
+  1  & 0                   & 0                  \\
+\end{array}\right)$. Es ergeben sich die Matrizen:
+
+\begin{equation*}
+  P_B =
+  \left(\begin{array}{rrr}
+    0 & 0 & 1 \\
+    0 & 1 & 0 \\
+    1 & 0 & 0 \\
+  \end{array}\right),
+  \quad
+  L_B =
+  \left(\begin{array}{rrr}
+    1 &  0          & 0 \\
+    0 &  1          & 0 \\
+    0 & -0.57735    & 1 \\
+  \end{array}\right),
+  \quad
+  U_B =
+  \left(\begin{array}{rrr}
+    1 & 0           & 0        \\
+    0 & 0.866025    & 0.866025 \\
+    0 & 0           & 1        \\
+  \end{array}\right)
+\end{equation*}
+
+\noindent
+Im Vergleich zu den $P$, $L$ und $U$ Martizen aus b) fällt auf besonders die $P$-Matrix auf.
+Offensichtlich werden in der $\textit{Eigen:PartialPivLu}$-Modul zunächst
+die (betragsmäßig) größte Zahl getauscht. Vergleiche erste Spalte der beiden $P$-Matrizen:\\
+$P_A$: Die erste Zeile ($\frac{1}{2}$-Eintrag) wird mit der dritten Zeile
+($\frac{\sqrt{3}}{2}$-Eintrag) getauscht. Die letzte Spalte braucht hingegen nicht mehr getausch werden.\\
+$P_B$: Die erste Zeile (Null-Eintrag) wird mit der dritten Zeile ($1$-Eintrag) getauscht.
+Die mittlere Spalte bleibt an ihrem Ort.\\
+Das Vorgehen soll absichern, dass durch keine Null geteilt wird. Effektiv werden
+$A$ und $B$ aber gleich oft getauscht. Dies führt zu unterschiedlichen $L$ und
+$U$ Matrizen.
+
 \section*{Aufgabe2: Ausgleichsrechnung}
 
 Gegeben seien die folgenden (x, y)-Datenpunkte:
@@ -28,6 +162,9 @@ Für diese soll eine Ausgleichsgerade
   R& = \sum_i(m\, x_i \, +\, n \, -\, y_i)^2\\
 \end{align*}
 minimiert.
+
+
+
 
 \subsection*{a) Formulierung des überbestimmten Gleichungssystems}
 
