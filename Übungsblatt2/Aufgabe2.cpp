@@ -24,7 +24,7 @@ Eigen::VectorXd LUZerlegung(const int N)
   Profiler::stop(0);
   t(0) = Profiler::getTimeInS(0);
 
-  //Schritt 2: LU-Zerlegung
+  //Schritt 2: LU-Zerlegung 
   Profiler::start(1);
   PartialPivLU<MatrixXd> LU(M);
   Profiler::stop(1);
@@ -48,7 +48,6 @@ int main()
   const int n = 13; // Verwendung einer logarithmischen Skalierung; also ist NMax = 2^n
   int N_Max = pow(2, n);
   MatrixXd A(n+1, 3);
-  VectorXd N(n+1);
   int index = 0;
 
   for(int i = 1; i <= N_Max; i = 2*i)
@@ -56,6 +55,7 @@ int main()
     VectorXd t = LUZerlegung(i);
     A.row(index) = t;
     index++;
+
   }
 
   ofstream f;

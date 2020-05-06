@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 t1, t2, t3 = np.genfromtxt('data2b.txt', unpack=True)
 N = ([1, 2, 2**2, 2**3, 2**4, 2**5, 2**6, 2**7, 2**8, 2**9, 2**(10), 2**(11), 2**(12), 2**(13)])
 
-plt.loglog(N, t1, label = 'Erstellen der Zufallskomponenten')
+plt.loglog(N, t1, label = 'Erstellen der Zufallsmatrix')
 plt.loglog(N, t2, label = 'LU-Zerlegung')
 plt.loglog(N, t3, label = 'Lösen des Gleichungssystems')
 plt.loglog(N, t3+t2+t1, label = 'Gesamtlaufzeit')

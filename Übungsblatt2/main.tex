@@ -4,4 +4,79 @@
 
 \maketitle
 
+\section*{Aufgabe1: Singulärwertzerlegung}
+
+\section*{Aufgabe2: Profiling zur Untersuchung eines Algorithmus}
+In dieser Aufgabe soll ein zufälliges Lineares Gleichungssystem, aus einer quadratischen Matrix $M$ der Dimension $N$ und N-dimensionalen Vektoren $x$ und $b$
+
+\begin{equation*}
+  M\, x\, =\, b
+\end{equation*}
+
+\noindent
+mit einer LU-Zerlegung gelöst werden. Dabei soll die Laufzeit der einzelnen Arbeitsschritte
+
+\begin{itemize}
+  \item[1)] Erstellen einer zufälligen N-dimensionalen Matrix $M$
+  \item[2)] Durchführung der LU-Zerlegung
+  \item[3)] Lösen des Gleichungssystems mit LU-Zerlegung
+\end{itemize}
+
+\noindent
+für verschiedene Dimensionen $N$ verglichen werden.
+
+\subsection*{b) Plotten der Laufzeiten}
+In diesem Aufgabenteil wurde N logarithmisch vergrößert und die Laufzeiten gemessen. Diese sind in Plot \ref{fig:plot2b} doppellogarithmisch aufgetragen. Zusätzlich wurde auch die Gesamtlaufzeit des Algorithmus berechnet.
+
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plot2b.pdf}
+    \caption{Aufgabe 2b: Laufzeiten der einzelnen Schritte doppellogarithmisch aufgetragen.}
+    \label{fig:plot2b}
+\end{figure}
+\FloatBarrier
+
+\subsection*{c) Deutung der Ergebnisse}
+
+\subsubsection*{Gesamtlaufzeit: Abschätzung der Laufzeit für N = 1.000.000}
+Offensichtlich besteht ein annähernd linearer Zusammenhang zwischen den logarithmierten Werten von $N$ und $t_{\text{ges}}$. Es gilt also
+
+\begin{equation*}
+ \ln(t_{\text{ges}})\, = \, a\,\ln(N)\, +\, b \qquad .
+\end{equation*}
+
+\noindent Zur Berechnung der Parameter $a$ und $b$ werden zwei beliebig gewählte Wertepaare eingesetzt und nach $a$ und $b$ umgeformt.
+
+\begin{align*}
+  N\,&=\,8192 \qquad t_{\text{ges}} \approx 24 \text{s} \\
+  N\,&=\,4096 \qquad t_{\text{ges}} \approx 3 \text{s}\\
+  \\
+  \Rightarrow a & = \frac{\ln\left(\frac{3}{24}\right)}{\ln\left(\frac{1}{2}\right)} = 3 \\
+  b & = \ln(24)-a\, \ln(8192) \approx - 23,85
+\end{align*}
+
+Somit ergibt sich für ein Gleichungssystem mit einer 1Mio$\times$1Mio-Matrix eine Laufzeit von
+
+\begin{equation*}
+  t_{\text{ges}} = \exp\left(3\ln(10^6)-23,85\right) \text s \approx 4,4 \cdot 10^{7} \text{s} \qquad .
+\end{equation*}
+
+\subsubsection*{Optimierungspotential:}
+Werden die Laufzeiten nicht logarithmisch aufgetragen, wird noch deutlicher, dass die LU-Zerlegung den größten Anteil der Gesamtlaufzeit ausmacht, wie in Abbildung \ref{fig:plot2c} zu sehen ist. Somit würde es sich am meisten auszahlen die LU-Zelegung bezüglich der Laufzeit zu optimieren.
+
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plot2c.pdf}
+    \caption{Aufgabe 2b: Laufzeiten der einzelnen Schritte.}
+    \label{fig:plot2c}
+\end{figure}
+\FloatBarrier
+
+\subsection*{d) Welche Faktoren schränken die Berechnung der Eigenwerte für große Matrizen weiter ein?}
+Für sehr große Matrizen ist die LU-Zerlegung anfällig gegenüber Rundungsfehlern und wird somit instabil.
+
+\section*{Aufgabe3: Profiling zur Untersuchung von Algorithmen}
+
 \end{document}
