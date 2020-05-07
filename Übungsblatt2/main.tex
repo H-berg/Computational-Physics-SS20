@@ -4,12 +4,12 @@
 
 \maketitle
 
-\section*{Aufgabe1: Singulärwertzerlegung}
+\section*{Aufgabe 1: Singulärwertzerlegung}
 \subsection*{a)}
-Das Bild wird mittels der Datei $\textit{service.cpp}$ eingelesen und wird dann
-zunächst durch Transposition gedreht, sodass der Affe einem schön in die Augen
-guckt (siehe Abbildung \ref{fig:1a}). Im nächsten Schritt wird mit Hilfe von
-$\textit{Eigen::BDCSVD}$ eine SVD durchgeführt.
+Das Bild wird mittels der Datei $\texttt{service.cpp}$ eingelesen und
+zunächst durch Transposition gedreht, sodass der Mandrill einem in die Augen
+sieht (siehe Abbildung \ref{fig:1a}). Im nächsten Schritt wird mithilfe von
+$\texttt{Eigen::BDCSVD}$ eine Singulärwertzerlegung durchgeführt.
 
 \begin{figure}[h]
     \centering
@@ -19,8 +19,8 @@ $\textit{Eigen::BDCSVD}$ eine SVD durchgeführt.
 \end{figure}
 
 \subsection*{b)}
-In diesem Aufgabenteil wird eine Rang-$k$-Approximation, gemäß der Vorlesung,
-für $k$-Werte von  10, 20 und 50 durchgeführt und im folgenden als Heatmap mit
+In diesem Aufgabenteil wird eine Rang-$k$-Approximation gemäß der Vorlesung,
+für $k$-Werte von  10, 20 und 50, durchgeführt und im folgenden als Heatmap mit
 Graustufen-Farbskala dargestellt.
 
 \begin{figure}[!htb]
@@ -63,7 +63,7 @@ Graustufen-Farbskala dargestellt.
     \label{fig:1b_50}
 \end{figure}
 
-\section*{Aufgabe2: Profiling zur Untersuchung eines Algorithmus}
+\section*{Aufgabe 2: Profiling zur Untersuchung eines Algorithmus}
 In dieser Aufgabe soll ein zufälliges Lineares Gleichungssystem, aus einer quadratischen Matrix $M$ der Dimension $N$ und N-dimensionalen Vektoren $x$ und $b$
 
 \begin{equation*}
@@ -134,6 +134,38 @@ Werden die Laufzeiten nicht logarithmisch aufgetragen, wird noch deutlicher, das
 \subsection*{d) Welche Faktoren schränken die Berechnung der Eigenwerte für große Matrizen weiter ein?}
 Für sehr große Matrizen ist die LU-Zerlegung anfällig gegenüber Rundungsfehlern und wird somit instabil.
 
-\section*{Aufgabe3: Profiling zur Untersuchung von Algorithmen}
+\section*{Aufgabe 3: Profiling zum Vergleich von Algorithmen}
+Ziel der Aufgabe ist die Anwendung eines einfachen Profiling zur Untersuchung verschiedener Routinen der
+Bibliothek \texttt{Eigen}. Dazu wird, wie auch in Aufgabe 2, ein lineares Gleichungssystem $Mx = b$ mit einer Matrix
+$M$ und einer rechten Seite $b$ mit jeweils zufälligen Einträgen erstellt, wofür \texttt{Eigen::MatrixXd::Random} und
+\texttt{Eigen::VectorXd::Random} verwendet wird. Die Dimensionalität der Matrix sei N.
+\begin{itemize}[leftmargin=*]
+\item[a)] Zur Lösung des Gleichungssystems werden nun die folgenden Methoden implementiert und verglichen
+\begin{itemize}[leftmargin=*]
+  \item[A)] Lösung durch Bestimmung und Anwendung der inversen Matrix $M^{-1}$ mit \\ \texttt{M.inverse()}
+  \item[B)] Lösung über eine LU-Zerlegung mit vollständiger Pivotisierung durch \\ \texttt{M.fullPivLu().solve(b)}
+  \item[C)] Lösung über eine LU-Zerlegung mit teilweiser Pivotisierung durch \\  \texttt{M.partialPivLu().solve(b)}
+\end{itemize}
+Zusätzlich wird überprüft ob das System invertierbar ist, wozu die Determinante verwendet wird.
+\item[b)] Im Programm wird außerdem überprüft, ob alle Methoden A, B und C die gleichen Ergbnisse liefern. Das ist
+jedoch hier auch immer der Fall.
+\item[c)] Die Ergebnisse der Laufzeitmessung der verschiedenen Vorgehensweisen sind in Abbildung \ref{fig:plot3} dargestellt.
+Verwendet wurde ein linear anwachsendes N mit Maximalwert $\text{N} = 1000$.
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a_3.pdf}
+    \caption{Aufgabe 3: Vergleich der Laufzeit der verschiedenen  Algorithmen zur Lösung des linearen Gleichungssystems. Verwendet wird eine doppellogarithmische Skalierung.}
+    \label{fig:plot3}
+\end{figure}
+\FloatBarrier
+\item[d)] Algorithmenvergleich: Am effizientesten ist in diesem Bereich von N die Berechnung über LU-Zerlegung mit
+teilweiser Pivotisierung. Weniger effizient ist die Berechnung über LU-Zerlegung mit voller Pivotisierung
+und über die Inverse, wobei der Zeitaufwand für beide Methoden sich wenig unterscheidet. Die Berechnung mit der inversen
+Matrix ist jedoch sinnvoll, falls diese noch weiter benötigt wird. Beachtet werden muss auch, dass die teilweise LU-Zerlegung
+nur für quadratische invertierbare Matrizen möglich ist. Mit voller Pivotisierung funktioniert die LU-Zerlegung für alle Matrizen und
+hat zudem den Vorteil, dass sie genauer ist.
+\end{itemize}
+
 
 \end{document}
