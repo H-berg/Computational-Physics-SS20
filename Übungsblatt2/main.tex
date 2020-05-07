@@ -5,6 +5,63 @@
 \maketitle
 
 \section*{Aufgabe1: Singulärwertzerlegung}
+\subsection*{a)}
+Das Bild wird mittels der Datei $\textit{service.cpp}$ eingelesen und wird dann
+zunächst durch Transposition gedreht, sodass der Affe einem schön in die Augen
+guckt (siehe Abbildung \ref{fig:1a}). Im nächsten Schritt wird mit Hilfe von
+$\textit{Eigen::BDCSVD}$ eine SVD durchgeführt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bild_rang_0.pdf}
+    \caption{Transponierte Bild-Daten}
+    \label{fig:1a}
+\end{figure}
+
+\subsection*{b)}
+In diesem Aufgabenteil wird eine Rang-$k$-Approximation, gemäß der Vorlesung,
+für $k$-Werte von  10, 20 und 50 durchgeführt und im folgenden als Heatmap mit
+Graustufen-Farbskala dargestellt.
+
+\begin{figure}[!htb]
+\minipage{0.33\textwidth}
+\includegraphics[width=\textwidth]{bild_rang_0.pdf}
+\caption*{k=10}
+\label{fig:1b_10}
+\endminipage\hfill
+\minipage{0.33\textwidth}
+\includegraphics[width=\textwidth]{bild_rang_20.pdf}
+\caption*{k=20}
+\label{fig:1b_20}
+\endminipage\hfill
+\minipage{0.33\textwidth}%
+\includegraphics[width=\textwidth]{bild_rang_50.pdf}
+\caption*{k=50}
+\label{fig:1b_50}
+\endminipage
+\caption{Singulärwertzerlegte Bild-Daten nach Rang-k-Approximation}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bild_rang_0.pdf}
+    \caption{Singulärwertzerlegte Bild-Daten nach Rang-k=10-Approximation}
+    \label{fig:1b_10}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bild_rang_20.pdf}
+    \caption{Singulärwertzerlegte Bild-Daten nach Rang-k=20-Approximation}
+    \label{fig:1b_20}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bild_rang_50.pdf}
+    \caption{Singulärwertzerlegte Bild-Daten nach Rang-k=50-Approximation}
+    \label{fig:1b_50}
+\end{figure}
 
 \section*{Aufgabe2: Profiling zur Untersuchung eines Algorithmus}
 In dieser Aufgabe soll ein zufälliges Lineares Gleichungssystem, aus einer quadratischen Matrix $M$ der Dimension $N$ und N-dimensionalen Vektoren $x$ und $b$
