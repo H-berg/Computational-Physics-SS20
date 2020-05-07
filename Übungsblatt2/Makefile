@@ -7,7 +7,7 @@ a_3.jpg: times.txt aufgabe_3.py
 	python aufgabe_3.py
 
 times.txt results.txt: aufgabe_3.cpp profiler.cpp profiler.h
-	g++ $(CXXFLAGS) -std=c++11 aufgabe_3.cpp profiler.cpp -o aufgabe_3
+	g++ $(CXXFLAGS) -std=c++11 aufgabe_3.cpp profiler.cpp -o aufgabe_3 $(INCPATH)
 	./aufgabe_3
 
 aufgabe01: bild_rang_0.txt bild_rang_10.txt	bild_rang_20.txt bild_rang_50.txt
