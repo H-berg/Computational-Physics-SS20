@@ -1,0 +1,3 @@
+# 	 trapezregel 	 mittelpunktsregel 	  simpsonregel 
+I_1: 	0.219386			0.219379					0.219384
+I_2: 	0.378534			0.37851						0.378553
