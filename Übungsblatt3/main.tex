@@ -6,6 +6,24 @@
 
 \section*{Aufgabe1: Lanczos-Algorithmus}
 
+\subsection*{a)}
+Der Lanczos-Algorithmus ist implementiert, sodass eine Tridiagonale Matrix $T$ berechnet wird. Mit einer $\textit{Eigen}$-Klasse werde dann Eigenwerte und Eigenvektoren berechnet. Leider kommen dabei keine sinnvollen Werte/Vektoren raus.
+
+\subsection*{b)}
+Die Hamilton-Matrix für eine Kette mit sechs Gitterplätzen sieht folglich aus:
+
+\begin{pmatrix}
+	0  & -t & 0			 & 0  & 0  & -t \\
+	-t & 0  & -t	     & 0  & 0  &  0 \\
+	0  & -t & \epsilon   & -t & 0  &  0 \\
+	0  & 0  & -t		 & 0  & -t &  0 \\
+	0  & 0  & 0			 & -t & 0  &  -t \\
+	-t & 0  & 0			 & 0  & -t &  0 
+\end{pmatrix}
+
+\subsection*{c)}
+Für sehr große $N$ könnte man eine Sparse-Matrix (dünnbesetzte Matrix) benutzen.
+
 \section*{Aufgabe2: Federkette}
 Gegeben sei eine freie lineare Federkette mit Punktmassen $m_i$, Federkonstanten $k_j$ und Federruhelängen $l_j$ mit $i \in \{1, ..., N\}$ und $j \in \{1, ..., N-1\}$.
 \begin{figure}[h]
