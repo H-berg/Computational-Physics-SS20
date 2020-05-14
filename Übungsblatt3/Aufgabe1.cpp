@@ -33,7 +33,7 @@ double lanczos(MatrixXd &A, VectorXd q){
 
 
 
-  while(gamma != 0 && abs(EW_then-EW_now) > 0.01){
+  while(gamma != 0 && abs(EW_then-EW_now) > 0.001){
     //Iteration
     v = (A-delta*one)*q - gamma0*q0;
 
@@ -98,17 +98,19 @@ int main()
   H(N/2, N/2) = epsilon;
   double eigenwert = lanczos (H, q);
 
-  ofstream f;
-  f.open("Aufgabe1b_EV_EW.txt");
-  f << "Der Eigenwert lautet: " << eigenwert << "\n";
-  f.flush();
-  f.close();
-
   MatrixXd M = H - one*eigenwert;
   //Eigenvektor berechnen
   FullPivLU<MatrixXd> LUf(M);
   VectorXd eigenvektor = LUf.solve(VectorXd::Zero(N));
-  cout << eigenvektor << endl;
+
+  ofstream f;
+  f.open("Aufgabe1b_EV_EW.txt");
+  f << "Der Eigenwert lautet: " << eigenwert << "\n";
+  f << "Der Eigenvektor lautet" << eigenvektor << "\n";
+  f.flush();
+  f.close();
+
+
 
   return 0;
 

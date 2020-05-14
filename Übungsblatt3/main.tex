@@ -5,21 +5,37 @@
 \maketitle
 
 \section*{Aufgabe1: Lanczos-Algorithmus}
+In dieser Aufgabe wird eine fermionische Kette aus N Gitterplätzen (N gerade) betrachtet. Der Hamiltonoperator in der Basis $|i\rangle ,\, i \in [1,...,N]$ lautet
+
+\begin{equation*}
+  \hat{H} = -t \sum_{i=1}^N \left(|i\rangle\langle i+1| + |i+1\rangle \langle i |\right) + \epsilon |\frac{N}{2}\rangle \langle \frac{N}{2} | \qquad .
+\end{equation*}
 
 \subsection*{a)}
-Der Lanczos-Algorithmus ist implementiert, sodass eine Tridiagonale Matrix $T$ berechnet wird. Mit einer $\textit{Eigen}$-Klasse werde dann Eigenwerte und Eigenvektoren berechnet. Leider kommen dabei keine sinnvollen Werte/Vektoren raus.
+Der Lanczos-Algorithmus ist implementiert, sodass eine Tridiagonale Matrix $T$ berechnet wird. Mit Hilfe der $\textit{Eigen}$-Bibliothek werde dann Eigenwerte und Eigenvektoren berechnet. Leider sind die erhaltenen Eigenvektoren und Eigenwerte nicht sinnvoll, was auf eine fehlerhafte Implementierung schließen lässt. Für eine höhere erforderte Genauigkeit ergeben sich immer kleinere Eigenwerte, was darauf schließen lässt, dass der kleinste Eigenwert $\lambda_{\text{min}}=0$ ist. Dieses ergibt bezogen auf die Aufgabenstellung allerdings unseres Erachtens keinen Sinn, da sich ja ein Elektron auf dem Gitter befindet, die Energie also nicht $0$ sein kann. Auch die entsprechenden Eigenvektoren konvergieren gegen den Nullvektor. Die Ergebnisse für Eigenwert und Eigenvektor sind für verschiedene Genauigkeiten (hiermit ist gemeint, was in Z.36 im Programm Aufgabe1.cpp als nicht mehr signifikante Änderung festgelegt wurde) im folgenden aufgeführt:
+
+\begin{align*}
+|\lambda_{\text{then}}-\lambda_{now}| & = 0.01 \quad \,\; \quad \Rightarrow \qquad \lambda_{\text{min}} = 0.398249 \qquad \vec{v}_{\lambda} = \vec{0}\\
+|\lambda_{\text{then}}-\lambda_{now}| & = 0.001 \qquad\. \Rightarrow \qquad \lambda_{\text{min}} = 0.0262954 \qquad \vec{v}_{\lambda} = \vec{0}\\
+ & \vdots
+\end{align*}
+
+Leider konnten wir den Fehler in der Implementierung nicht ausfindig machen
 
 \subsection*{b)}
 Die Hamilton-Matrix für eine Kette mit sechs Gitterplätzen sieht folglich aus:
 
+\begin{equation*}
+  \hat{H}=
 \begin{pmatrix}
 	0  & -t & 0			 & 0  & 0  & -t \\
 	-t & 0  & -t	     & 0  & 0  &  0 \\
-	0  & -t & \epsilon   & -t & 0  &  0 \\
+	0  & -t & \epsilon  & -t & 0  &  0 \\
 	0  & 0  & -t		 & 0  & -t &  0 \\
 	0  & 0  & 0			 & -t & 0  &  -t \\
-	-t & 0  & 0			 & 0  & -t &  0 
+	-t & 0  & 0			 & 0  & -t &  0
 \end{pmatrix}
+\end{equation*}
 
 \subsection*{c)}
 Für sehr große $N$ könnte man eine Sparse-Matrix (dünnbesetzte Matrix) benutzen.
