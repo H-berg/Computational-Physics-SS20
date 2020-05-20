@@ -1,0 +1,108 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1: Eindimensionale Integration}
+
+\section*{Aufgabe 2: Mehrdimensionale Integration in der Elktrostatik}
+
+Das elektrostatische Potential entlang der x-Achse:
+
+\begin{equation*}
+  \phi(x)=\frac{1}{4 \pi \epsilon_{0}} \int \mathrm{d} x^{\prime} \int \mathrm{d} y^{\prime} \int \mathrm{d} z^{\prime} \frac{\rho\left(x^{\prime}, y^{\prime}, z^{\prime}\right)}{\left[\left(x-x^{\prime}\right)^{2}+y^{\prime 2}+z^{\prime 2}\right]^{1 / 2}}
+\end{equation*}
+
+\noindent
+für zwei Ladungsverteilungen in einem Würfel der Kantenlänge $2a$ ist zu bestimmen.
+
+
+\subsection*{a)}
+
+\begin{equation*}
+  \rho(x, y, z)=\left\{\begin{array}{ll}\rho_{0}, & |x|<a,|y|<a,|z|<a \\ 0, & \text { sonst }\end{array}\right.
+\end{equation*}
+
+
+\subsubsection*{(1)}
+
+Das Integral wird folgendermaßen einheitenlos gemacht. Dabei wird $a$ gleich Eins
+gesetzt.
+
+\begin{equation*}
+  x' \rightarrow \frac{x}{a} \quad
+  \phi' \rightarrow \phi\frac{4\pi\epsilon_0}{\rho_0 a^2  }
+\end{equation*}
+
+\subsubsection*{(2) +(3)}
+Das Integral wird mit der Mittelpunktsregel außerhalb des Würfels für x-Werte
+$x / a=0.1 n$ mit $n \in\{11,12, \ldots, 80\}$ ausgewertet. Die Asymptotik des
+Potentials für große x-Werte wird mit einer Multipolentwicklung bis zur ersten
+nicht-verschwindenden Ordnung abgeschätzt:
+
+\begin{equation*}
+  \frac{1}{\sqrt{x^2+y^2+z^2}} \int_{-1}^1 \int_{-1}^1 \int_{-1}^1 dx'dy'dz'
+  \overset{\mathrm{y=z=0}}{=} \frac{8}{x}
+\end{equation*}
+
+und ist zusammen mit der Integral-Auswertung in Abbildung \ref{fig:2a.2} abgebildet.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/out_a.pdf}
+    \caption{x-Werte außerhalb des Potentials}
+    \label{fig:2a.2}
+\end{figure}
+
+\subsubsection*{(4)}
+Nun wird das Potential für x-Wert innerhalb des Würfels:
+$x / a=0.1 n$ mit $n \in\{0,1, \ldots, 10\}$ ausgewertet und in Abbildung \ref{fig:2a.4}
+dargestellt. Singularitäten können hier zu Probleme führen, weshalb die Schrittweite $h$
+in allen drei Integrationen auf eine irrationale Zahl $\frac{1}{30\pi}$ gesetzt wird.
+Es ist nun sehr unwahrscheinlich, dass $x$ gleich $x'$, und somit $(x-x')^2$
+(und damit möglicherweise auch der ganze Nenner) Null wird.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/in_a.pdf}
+    \caption{x-Werte innerhalb des Potentials}
+    \label{fig:2a.4}
+\end{figure}
+
+\subsection*{b)}
+
+\begin{equation}\rho(x, y, z)=\left\{\begin{array}{ll}
+\rho_{0} \frac{x}{a}, & |x|<a,|y|<a,|z|<a \\
+0, & \text { sonst }
+\end{array}\right.\end{equation}
+
+\subsubsection*{(1)}
+Analog zu a)
+
+\subsubsection*{(2)+(3)}
+Multipolentwicklung bis zu ersten nicht-verschwindenden Ordnung:
+
+\begin{equation*}
+  \frac{1}{\sqrt{x^2+y^2+z^2}} \int_{-1}^1 \int_{-1}^1 \int_{-1}^1 x^2 dx'dy'dz'
+  \overset{\mathrm{y=z=0}}{=} \frac{8}{3x^2}
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/out_b.pdf}
+    \caption{x-Werte außerhalb des Potentials}
+    \label{fig:2b.2}
+\end{figure}
+
+\subsubsection*{(4)}
+Analog zu a)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/in_b.pdf}
+    \caption{x-Werte innerhalb des Potentials}
+    \label{fig:2b.4}
+\end{figure}
+
+\end{document}
