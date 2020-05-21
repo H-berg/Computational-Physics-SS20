@@ -5,9 +5,91 @@
 \maketitle
 
 \section*{Aufgabe 1: Eindimensionale Integration}
+Ziel der Aufgabe ist die numerische Berechung der folgenden Integrale mit einer der Integrationsroutinen,
+die bereits auf dem letzten Übungsblatt implementiert wurden:
+\begin{align*}
+	I_1 &= \dashint_{-1}^{1} \text{d} t \,\frac{\text{e}^{t}}{t} \\
+	I_2 &= \int_0^{\infty} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} \\
+  I_3 &= \int_{-\infty}^{\infty} \text{d} t \, \frac{\sin (t)}{t}
+\end{align*}
+\noindent
 
-\section*{Aufgabe 2: Mehrdimensionale Integration in der Elktrostatik}
-
+\begin{itemize}[leftmargin=*]
+\item[a)] Da es sich bei diesem Integral um ein Hauptwertintegral handelt, sollte nicht direkt integriert werden. Stattdessen wird das Integral wie folgt aufgeteilt:
+          \begin{align*}
+          I_1 &= \dashint_{-1}^{1} \text{d} t \,\frac{\text{e}^{t}}{t} = \underbrace{\int_{-1}^{-\increment} \, \frac{\text{e}^{t}}{t} \, \text{d} t + \int_{\increment}^{1} \, \frac{\text{e}^{t}}{t} \, \text{d} t}_{\text{Numerische Berechnung}} + \underbrace{\int_{-\increment}^{\increment} \, \frac{\text{e}^{t}}{t} \, \text{d} t}_{I'} \\
+          I' &= \lim_{\varepsilon\to 0} \left(\int_{-\increment}^{-\varepsilon} \frac{\text{e}^{t}}{t}  \, \text{d} t +  \underbrace{\int_{\varepsilon}^{\increment} \frac{\text{e}^{t}}{t}  \, \text{d} t}_{I''}\right) \\
+             &= \lim_{\varepsilon\to 0} \left(\int_{-\increment}^{-\varepsilon} \frac{\text{e}^{t}}{t}  \, \text{d} t + \int_{-\varepsilon}^{-\increment} \frac{\text{e}^{-t}}{(-t)}  \, \text{d} (-t)\right) \\
+             &= \lim_{\varepsilon\to 0} \underbrace{\left(\int_{-\increment}^{-\varepsilon} \frac{\text{e}^{t}-\text{e}^{-t}}{t}  \, \text{d} t \right)}_{\text{hebbare Singularität}} \\
+             &= \int_{-\increment}^{0} \frac{\text{e}^{t}-\text{e}^{-t}}{t}  \, \text{d} t \\
+          \intertext{mit}
+          \lim_{t \to 0} \frac{\text{e}^{t}-\text{e}^{-t}}{t} &= \lim_{t \to 0} \frac{\text{e}^{t}+\text{e}^{-t}}{1} = 2
+          \end{align*}
+\item[b)] Bei diesem Integral wird bis zu einer oberen Grenze $x_\text{max} = 100000$ ingetriert,
+          \begin{align*}
+          I_2 &= \int_0^{\infty} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} \\
+              &=  \underbrace{\int_0^{x_\text{max}} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}}_{I'} +  \underbrace{\int_{x_\text{max}}^{\infty} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}}_{\text{Fehler}} \\
+          I' &= \int_0^{x_\text{max}} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} \\
+             &= \int_0^{\increment x} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}
+          \end{align*}
+          wobei die erste Integration für ein sehr kleines $\increment x$ vernachlässigt werden kann.
+\item[c)] Bei diesem Integral wird ausgenutzt, dass die zu integrierende Funktion symmetrisch ist:
+          \begin{align*}
+          I_3 &= \int_{-\infty}^{\infty} \text{d} t \, \frac{\sin (t)}{t} \\
+              &= 2 \int_{0}^{\infty} \text{d} t \, \frac{\sin (t)}{t} \\
+              &= 2 \int_{0}^{1} \text{d} t \, \frac{\sin (t)}{t} + 2 \underbrace{\int_{1}^{\infty} \text{d} t \, \frac{\sin (t)}{t}}_{I'} \\
+          \intertext{Das erste Integral hat bei $t=0$ eine hebbare Singularität. Für $I'$ wird eine Substition mit $t = \frac{1}{x}$ durchgeführt.}
+          I' &= \int_{1}^{\infty} \text{d} t \, \frac{\sin (t)}{t} \\
+             &= \int_{1}^{0}  \left(- \frac{\text{d} x}{x^2}\right) \, \frac{\sin (\frac{1}{x})}{\frac{1}{x}} \\
+             &= \int_{1}^{0} \text{d} x \; \frac{\sin (\frac{1}{x})}{x}
+          \end{align*}
+\end{itemize}
+Mit diesen Umformungen wird die Integration nun implementiert. Die Ergebnisse unter Angabe der verwendeten Integrationsmethode
+befinden sich in der folgenden Tabelle.
+\FloatBarrier
+\begin{table}[h]
+    \centering
+		\label{tab:tab1}
+		\caption{Ergebnisse der Berechnung der einzelen Integrale.}
+    \begin{tabular}{c c c}
+        \toprule
+				$$ & $\text{Ergbnis}$ & $\text{Methode}$ \\
+				\midrule
+				$I_1$ & 2.1132 & $\text{Simpsonregel}$ \\
+				$I_2$ & 1.77034 & $\text{Mittelpunktsregel}$\\
+        $I_3$ & 3.14159 & $\text{Mittelpunktsregel}$\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\FloatBarrier
+\noindent
+Aufgabenteil c) wird außerdem analytisch berechnet. Das Integral hat, wie oben bereits erwähnt, eine hebbare Singularität
+bei $t = 0$, wozu die Regel von de l'Hospital angewandt wird:
+\begin{equation*}
+  \lim_{t \to 0} \frac{\sin (t)}{t} \stackrel{"\frac{0}{0}"}{=} \lim_{t \to 0} \cos (t) = 1
+\end{equation*}
+Der Sinus dargestellt durch
+\begin{equation*}
+  \sin (t) = \frac{1}{2i} \left(\symup{e}^{it}-\symup{e}^{-it}\right)
+\end{equation*}
+Zur Lösung des Integrals wird nun der Cauchy-Hauptwert verwendet und das Integral $\int_{-\infty}^{\infty} \frac{\text{e}^{it}}{t} \, \text{d} t$
+betrachtet:
+\begin{align*}
+  \text{CH} \int_{-\infty}^{\infty} f(x) \text{d} x &= \lim_{r \to 0} \left(\int_{-r}^{0}f(x) \text{d} x  + \int_{0}^{r}f(x) \text{d} x\right) \\
+  \text{CH} \int_{-\infty}^{\infty} \frac{\text{e}^{it}}{t} \, \text{d} t &= \lim_{R \to \infty, \varepsilon \to 0} \left(\int_{-R}^{-\varepsilon} \frac{\text{e}^{i \omega t}}{t} \, \text{d} t + \int_{\varepsilon}^{R} \frac{\text{e}^{i \omega t}}{t} \, \text{d} t \right) \\
+  &= \begin{cases}
+  i \pi   & \text{für} \; \omega > 0 \\
+  -i \pi  & \text{für} \; \omega < 0
+      \end{cases}
+\end{align*}
+Diese Ergebnisse werden nun für das hier vorliende Integral verwendet.
+\begin{align*}
+  \text{CH} \int_{-\infty}^{\infty} \frac{\sin (t)}{t} \text{d} t &= \lim_{R \to \infty, \varepsilon \to 0} \frac{1}{2i} \left(\int_{-R}^{-\varepsilon} \frac{\text{e}^{i t}}{t} \, \text{d} t + \int_{\varepsilon}^{R} \frac{\text{e}^{i t}}{t} \, \text{d} t - \int_{-R}^{-\varepsilon} \frac{\text{e}^{-i t}}{t} \, \text{d} t - \int_{\varepsilon}^{R} \frac{\text{e}^{-i t}}{t} \, \text{d} t \right) \\
+  &= \frac{1}{2 i} \left(i \pi - \left(-i \pi\right)\right) \\
+  &= \pi
+\end{align*}
+Dieses Ergebnis stimmt, unter Betrachtung eines gewissen Fehlers, mit dem Resultat aus der numerischen Berechnung in \ref{tab:tab1} überein.
+\section*{Aufgabe 2: Mehrdimensionale Integration in der Elektrostatik}
 Das elektrostatische Potential entlang der x-Achse:
 
 \begin{equation*}
