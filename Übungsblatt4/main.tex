@@ -30,7 +30,7 @@ die bereits auf dem letzten Übungsblatt implementiert wurden:
           I_2 &= \int_0^{\infty} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} \\
               &=  \underbrace{\int_0^{x_\text{max}} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}}_{I'} +  \underbrace{\int_{x_\text{max}}^{\infty} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}}_{\text{Fehler}} \\
           I' &= \int_0^{x_\text{max}} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} \\
-             &= \int_0^{\increment x} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}
+             &= \int_0^{\increment x} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}} + \int_{\increment x}^{x_\text{max}} \text{d} t \, \frac{\text{e}^{-t}}{\sqrt{t}}
           \end{align*}
           wobei die erste Integration für ein sehr kleines $\increment x$ vernachlässigt werden kann.
 \item[c)] Bei diesem Integral wird ausgenutzt, dass die zu integrierende Funktion symmetrisch ist:
@@ -41,7 +41,7 @@ die bereits auf dem letzten Übungsblatt implementiert wurden:
           \intertext{Das erste Integral hat bei $t=0$ eine hebbare Singularität. Für $I'$ wird eine Substition mit $t = \frac{1}{x}$ durchgeführt.}
           I' &= \int_{1}^{\infty} \text{d} t \, \frac{\sin (t)}{t} \\
              &= \int_{1}^{0}  \left(- \frac{\text{d} x}{x^2}\right) \, \frac{\sin (\frac{1}{x})}{\frac{1}{x}} \\
-             &= \int_{1}^{0} \text{d} x \; \frac{\sin (\frac{1}{x})}{x}
+             &= \int_{0}^{1} \text{d} x \; \frac{\sin (\frac{1}{x})}{x}
           \end{align*}
 \end{itemize}
 Mit diesen Umformungen wird die Integration nun implementiert. Die Ergebnisse unter Angabe der verwendeten Integrationsmethode
@@ -68,7 +68,7 @@ bei $t = 0$, wozu die Regel von de l'Hospital angewandt wird:
 \begin{equation*}
   \lim_{t \to 0} \frac{\sin (t)}{t} \stackrel{"\frac{0}{0}"}{=} \lim_{t \to 0} \cos (t) = 1
 \end{equation*}
-Der Sinus dargestellt durch
+Der Sinus wird dargestellt durch
 \begin{equation*}
   \sin (t) = \frac{1}{2i} \left(\symup{e}^{it}-\symup{e}^{-it}\right)
 \end{equation*}
@@ -82,7 +82,7 @@ betrachtet:
   -i \pi  & \text{für} \; \omega < 0
       \end{cases}
 \end{align*}
-Diese Ergebnisse werden nun für das hier vorliende Integral verwendet.
+Diese Ergebnisse werden nun für das hier vorliegende Integral verwendet.
 \begin{align*}
   \text{CH} \int_{-\infty}^{\infty} \frac{\sin (t)}{t} \text{d} t &= \lim_{R \to \infty, \varepsilon \to 0} \frac{1}{2i} \left(\int_{-R}^{-\varepsilon} \frac{\text{e}^{i t}}{t} \, \text{d} t + \int_{\varepsilon}^{R} \frac{\text{e}^{i t}}{t} \, \text{d} t - \int_{-R}^{-\varepsilon} \frac{\text{e}^{-i t}}{t} \, \text{d} t - \int_{\varepsilon}^{R} \frac{\text{e}^{-i t}}{t} \, \text{d} t \right) \\
   &= \frac{1}{2 i} \left(i \pi - \left(-i \pi\right)\right) \\
