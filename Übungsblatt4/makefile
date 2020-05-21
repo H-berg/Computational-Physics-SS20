@@ -7,12 +7,15 @@ a_1.cpp:
 	g++ $(INCPATH) $(CXXFLAGS) -std=c++11 a_1.cpp -o a_1
 	./a_1
 
-Aufgabe02: in.txt out.txt Aufgabe02_plot.py
+Aufgabe02: in.txt out.txt Aufgabe02_plot.py | Abbildungen
 	python Aufgabe02_plot.py
 
 in.txt out.txt: Aufgabe02.cpp
 	g++ $(INCPATH) $(CXXFLAGS) -std=c++11 Aufgabe02.cpp -o Aufgabe02
 	./Aufgabe02
+
+Abbildungen:
+		mkdir -p Abbildungen/
 
 clean:
 	rm -f a_1
