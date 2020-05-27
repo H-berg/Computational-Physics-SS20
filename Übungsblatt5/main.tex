@@ -1,0 +1,39 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1: Fouriertransformation}
+
+\section*{Aufgabe 2: Eindimensionale Minimierungsverfahren}
+
+Mittels zweier unterschiedlicher Verfahren sollen das Minima der Funktion
+\begin{equation*}
+  f(x) = x^2 - 2
+\end{equation*}
+
+\noindent
+gefunden werden. Die dabei benötigten Iterationsschritte werden in Tabelle
+\ref{tab:A2} wiedergeben.
+
+\begin{table}
+\centering
+\begin{tabular}{c c c}
+  \toprule
+  $\text{Verfahren}$          & $\text{Intervallhalbierung}$ & $\text{Newton}$  \\
+  \midrule
+  $\text{Iterationsschritte}$ & 61                           & 1                \\
+  \bottomrule
+\end{tabular}
+\caption{Die Genauigkeitsschranke liegt bei $x_{\text{c}} = 10^{-9}$.}
+\label{tab:A2}
+\end{table}
+
+\noindent
+Es wird deutlich, dass das Newton-Verfahren wenseltich weniger Iterationsschritte
+benötigt als das Intervallhalbierungs-Verfahren. Somit ist dies (für den Startwert von
+$x_0 = 1$) das effizientere Verfahren.
+
+
+\end{document}
