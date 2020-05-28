@@ -1,0 +1,2 @@
+Die Intervallhalbierung benötigt 61 Interrationsschritte.
+Das Newton-Verfahren benötigt 2 Interrationsschritte.
