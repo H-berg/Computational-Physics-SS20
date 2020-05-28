@@ -1,11 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <Eigen/Dense>
-#include <Eigen/Eigenvalues>
-#include <string>
-#include <vector>
-#include <stdio.h>
-#include <math.h>
 #include <cmath>
 #include <complex>
 
@@ -55,6 +50,7 @@ int bin(int n, int l)
   return k;
 }
 
+//Diskrete Fouriertransformation
 VectorXcd DFT(int m, int n, VectorXcd f)
 {
   const complex<double> I(0.0, 1.0);
@@ -96,6 +92,7 @@ VectorXcd DFT(int m, int n, VectorXcd f)
   return F;
 }
 
+//Funktion für Aufgabenteil 1
 VectorXcd f(int m, int n)
 {
   VectorXcd f = VectorXcd::Zero(n);
@@ -106,11 +103,13 @@ VectorXcd f(int m, int n)
   return f;
 }
 
+//Funktion für Aufgabenteil 2
 double f_1(double x)
 {
   return exp(-(x * x) / 2);
 }
 
+//Funktion für Aufgabenteil 3 (Rechteckschwingung)
 double f_2(double x)
 {
   if (x > 0 && x < M_PI)
@@ -123,6 +122,7 @@ double f_2(double x)
   }
 }
 
+//Schnelle Fouriertransformation mit Verschiebung und Phasenfaktormultiplikation
 VectorXcd FFT(int m, int n, VectorXd x, double (*funptr)(double)){
   VectorXd H = VectorXd::Zero(n);
   VectorXcd F = VectorXcd::Zero(n);
@@ -140,6 +140,7 @@ VectorXcd FFT(int m, int n, VectorXd x, double (*funptr)(double)){
     F(i + n / 2) = G(i);
   }
 
+  //Multiplikation mit Phasenfaktor
   const complex<double> I(0.0, 1.0);
   double L = x(0) - x(x.size() - 1);
   double d_x = L / n;
@@ -151,6 +152,7 @@ VectorXcd FFT(int m, int n, VectorXd x, double (*funptr)(double)){
   return F;
 }
 
+//Direkte Berechnung
 VectorXcd D(int m, int n, VectorXcd f){
   const complex<double> I(0.0, 1.0);
   VectorXcd F = VectorXcd::Zero(n);
@@ -165,8 +167,10 @@ VectorXcd D(int m, int n, VectorXcd f){
 int main(){
   int m = 7;
   int n = pow(2, m);
-  VectorXd x = VectorXd::LinSpaced(n, -10, 10);     //Teil 2
-  VectorXd y = VectorXd::LinSpaced(n, -M_PI, M_PI); //Teil 3
+  VectorXd x = VectorXd::LinSpaced(n, -10, 10);     //x-Werte von Aufgabenteil 2
+  VectorXd y = VectorXd::LinSpaced(n, -M_PI, M_PI); //x-Werte von Aufgabenteil 3
+
+  //Aufgabenteil 1
   std::ofstream file;
   file.open("dft_3.txt", std::ios_base::trunc);
   file << "#DFT \n";
@@ -188,9 +192,11 @@ int main(){
   file << D(4, 16, f(4, 16)) << "\n";
   file.flush();
   file.close();
+
+  //Aufgabenteil 2 und 3
   file.open("fft_1.txt", std::ios_base::trunc);
   file << "#fft_1 \n";
-  
+
   VectorXcd fft1 = FFT(m, n, x, f_1);
   VectorXcd fft2 = FFT(m, n, y, f_2);
   for (int i = 0; i < n; i++)
