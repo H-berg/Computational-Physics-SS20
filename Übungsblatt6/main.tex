@@ -1,0 +1,77 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1: Mehrdimensionale Minimierung}
+Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfahrens und des Konjuguerte-Gradienten-Verfahrens zur mehrdimensionalen Mininmierung.
+\begin{itemize}[leftmargin=*]
+\item[a)] Für die Implementierung des Gradienten-Verfahrens und des Konjuguerte-Gradienten-Verfahrens wird das
+          Newton-Verfahren verwendet, um die optimale Schrittweite zu bestimmen.
+          Zur Überprüfung beider Verfahren wird die Rosenbrock-Funktion
+          \begin{equation*}
+            f\left(x_1, x_2\right) = \left(1 - x_1\right)^2 + 100 \left(x_2 - x_1^2\right)^2
+          \end{equation*}
+          mit dem Startpunkt
+          \begin{equation*}
+            \vec{x_0} = \begin{pmatrix}
+              -1 \\
+              1
+          \end{pmatrix}
+          \end{equation*}
+          verwendet. In den Abbildungen \ref{fig:a1_1}  und \ref{fig:a1_2} sind die einzelnen Schritte $\vec{x_n}$ dargestellt.
+          \FloatBarrier
+          \begin{figure}[H]
+              \centering
+              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \caption{Contour-Plot zur Darstellung der einzelnen Schritte des Gradienten-Verfahrens.}
+              \label{fig:a1_1}
+          \end{figure}
+          \FloatBarrier
+          \noindent
+          \FloatBarrier
+          \begin{figure}[H]
+              \centering
+              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \caption{Contour-Plot zur Darstellung der einzelnen Schritte des Konjugierte-Gradienten-Verfahrens.}
+              \label{fig:a1_2}
+          \end{figure}
+          \FloatBarrier
+          \noindent
+          Außerdem wird der Fehler $\varepsilon_k = \left| \left|x^k - x^{*} \right| \right|$ in der $L_2$-Norm
+          geplottet, was in Abbildung \ref{fig:a1_3} dargestellt ist.
+          \FloatBarrier
+          \begin{figure}[H]
+              \centering
+              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \caption{Fehler des Gradienten-Verfahrens und des Konjugierte-Gradiente-Verfahrens.}
+              \label{fig:a1_2}
+          \end{figure}
+          \FloatBarrier
+          \noindent
+\item[b)] Nun wird mit der in Aufgabenteil a) implementierten Methode der konjugierten Gradienten das Minimum
+          der Funktion
+          \begin{equation*}
+            f\left(x_1, x_2\right) = \left(1 + \frac{\exp \left(-10 \left(x_1 x_2 -3\right)^2\right)}{x_1^2 + x_2^2}\right)^{-1}
+          \end{equation*}
+          bestimmt. Dazu werden die Startwerte
+          \begin{equation*}
+            x_0 \in \left\{\begin{pmatrix}
+              1.5 \\
+              2.3
+            \end{pmatrix}, \begin{pmatrix}
+              -1.7 \\
+              -1.9
+            \end{pmatrix}, \begin{pmatrix}
+              0.5 \\
+              0.6
+            \end{pmatrix} \right\}
+          \end{equation*}
+          verwendet. Für die ersten Startwerte ergibt sich das Minimum $\left(?, ?\right)^{\text{T}}$, für die zweiten das Minimum $\left(?, ?\right)^{\text{T}}$ und für die dritten Startwerte ergibt sich
+          $\left(?, ?\right)^{\text{T}}$.
+\end{itemize}
+
+\section*{Aufgabe 2: BFGS-Verfahren}
+
+\end{document}
