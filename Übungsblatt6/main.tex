@@ -20,11 +20,11 @@ Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfah
               1
           \end{pmatrix}
           \end{equation*}
-          verwendet. In den Abbildungen \ref{fig:a1_1}  und \ref{fig:a1_2} sind die einzelnen Schritte $\vec{x_n}$ dargestellt.
+          verwendet. Bei beiden Verfahren ergibt sich ein Minimum an der Stelle $(1, 1)^{\text{T}}$. In den Abbildungen \ref{fig:a1_1}  und \ref{fig:a1_2} sind die einzelnen Schritte $\vec{x_n}$ dargestellt.
           \FloatBarrier
           \begin{figure}[H]
               \centering
-              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \includegraphics[width=0.8\textwidth]{plotgrad_a.pdf}
               \caption{Contour-Plot zur Darstellung der einzelnen Schritte des Gradienten-Verfahrens.}
               \label{fig:a1_1}
           \end{figure}
@@ -33,7 +33,7 @@ Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfah
           \FloatBarrier
           \begin{figure}[H]
               \centering
-              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \includegraphics[width=0.8\textwidth]{plotgrad_b.pdf}
               \caption{Contour-Plot zur Darstellung der einzelnen Schritte des Konjugierte-Gradienten-Verfahrens.}
               \label{fig:a1_2}
           \end{figure}
@@ -44,9 +44,9 @@ Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfah
           \FloatBarrier
           \begin{figure}[H]
               \centering
-              %\includegraphics[width=0.8\textwidth]{.pdf}
+              \includegraphics[width=0.8\textwidth]{err.pdf}
               \caption{Fehler des Gradienten-Verfahrens und des Konjugierte-Gradiente-Verfahrens.}
-              \label{fig:a1_2}
+              \label{fig:a1_3}
           \end{figure}
           \FloatBarrier
           \noindent
@@ -68,8 +68,10 @@ Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfah
               0.6
             \end{pmatrix} \right\}
           \end{equation*}
-          verwendet. Für die ersten Startwerte ergibt sich das Minimum $\left(?, ?\right)^{\text{T}}$, für die zweiten das Minimum $\left(?, ?\right)^{\text{T}}$ und für die dritten Startwerte ergibt sich
-          $\left(?, ?\right)^{\text{T}}$.
+          verwendet. Für die ersten Startwerte ergibt sich das Minimum $\left(\-infty, \infty \right)^{\text{T}}$, für die zweiten das Minimum $\left(0.7161, 0.2992\right)^{\text{T}}$ und für die dritten Startwerte ergibt sich
+          $\left(-\text{nan},-\text{nan}\right)^{\text{T}}$.
+
+        Da der Plot bereits in Aufgabenteil a ein wenig seltsam aussieht und auch die Ergebnisse in Aufgabenteil b weniger überzeugend sind. Vermuten wir, dass in der Implementierung des konjugierten Gradientenverfahren ein Fehler ist, den wir leider nicht finden konnten.
 \end{itemize}
 
 \section*{Aufgabe 2: BFGS-Verfahren}
