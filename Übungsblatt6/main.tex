@@ -75,5 +75,58 @@ Ziel der Aufgabe ist die Implementierung und Überprüfung des Gradienten-Verfah
 \end{itemize}
 
 \section*{Aufgabe 2: BFGS-Verfahren}
-
+\begin{itemize}[leftmargin=*]
+\item[a)] Ziel dieser Aufgabe ist die Implementierung des Broyden-Fletcher-Goldfarb-Shanno-Algorithmus
+          (BFGS-Algorithmus). Der implementierten Minimierungsfunktion \texttt{BFGS} werden dabei die zu minimierende Funktion \texttt{f}, die Gradientenfunktion \texttt{g}, der Vektor mit den Startwerten \texttt{$x_0$}, die Hessematrix \texttt{$c_0$} und der konstante Wert für die Toletanz \texttt{epsilon}
+          übergeben.
+\item[b)] Die initiale Hessematrix \texttt{$c_0$} kann über drei Verfahren bestimmt werden, die ebenfalls
+          implementiert werden:
+          \begin{enumerate}
+            \item Eine Möglichkeit ist, die exakte inverse Hessematrix $\tilde{c_0}$ zu berechnen.
+            \item Eine weitere Möglichkeit ist die Verwendung einer Diagonalmatrix, die als Diagonalelemente
+                  die Diagonalelemente der inversen Hessematrix hat.
+            \item Außerdem kann eine Einheitsmatrix verwendet werden, die mit einem Vorfaktor in der typischen
+                  Größenordnung von $f(x)$ multipliziert wird. Dazu wird hier $f(\vec{x_0})$ verwendet.
+          \end{enumerate}
+          Die Implementierung wird nun mit der Rosenbrock-Funktion aus Aufgabe 1 überprüft
+          \begin{equation*}
+            f\left(x_1, x_2\right) = \left(1 - x_1\right)^2 + 100 \left(x_2 - x_1^2\right)^2 \, .
+          \end{equation*}
+          Als Startpunkt wird hier ebenfalls
+          \begin{equation*}
+            \vec{x_0} = \begin{pmatrix}
+              -1 \\
+              1
+          \end{pmatrix}
+          \end{equation*}
+          verwendet, und die Fehlertoleranz bei $\varepsilon = 10^{-5}$ gesetzt.
+          Als Ergbnis der Minimierung des Verfahrens ergibt sich für die verschiedenen Möglichkeiten für die
+          initiale Hessematrix in jedem Fall
+          \begin{equation*}
+            \vec{x} = \begin{pmatrix}
+              1 \\
+              1
+          \end{pmatrix}
+          \end{equation*}
+\item[c)] Der Vergleich der Verfahren erfolgt über die Iterationszahl $k$.
+          Offenbar braucht das Verfahren die wenigsten Iterationsschritte, wenn es mit der exakten inversen
+          Hessematrix durchgeführt wird. Das Verfahren mit der Diagonalmatrix und das Verfahren mit der Einheitsmatrix sind gleich aufwändig. Im Verleich mit Aufgabe 1 a) fällt auf, dass das Verfahren
+          deutlich schneller ist als das Gradientenverfahren. Ein Vergleich mit dem Konjugierte-Gradienten-
+          Verfahren ist aus den oben genannten Gründen leider nicht möglich.
+          \FloatBarrier
+          \begin{table}[h]
+              \centering
+          		\label{tab:tab1}
+          		\caption{Iterationszahlen des BFGS-Verfahrens für die verschiedenen Möglichkeiten zur Bestimmung der initialen Hessematrix.}
+              \begin{tabular}{c c c c}
+                  \toprule
+          				$ $ & $\text{Exakte Matrix}$ & $\text{Diagonalmatrix}$ & $\text{Einheitsmatrix}$ \\
+          				\midrule
+                  $k$ & 75 & 84 & 84 \\
+                  \bottomrule
+              \end{tabular}
+          \end{table}
+          \FloatBarrier
+          \noindent
+\end{itemize}
 \end{document}
