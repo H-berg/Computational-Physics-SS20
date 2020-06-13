@@ -1,0 +1,113 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1: Runge-Kutta-Verfahren}
+\subsection*{a)}
+
+Das RK-Verfahren 4.Ordnung wird auf die Newtonsche Bewegungsgleichung für ein Teilchen implementiert und an einem harmonischen Oszillator mit zwei unterschiedlichen Anfangsbedingungen getest:\\
+1.Test:\\
+$\vec{r}(0)$ beliebig und $\vec{v}(0)=\vec{0} \implies \vec{r}(0) = (1,2,3)^T$ und $\vec{v}(0) = (1,1,1)^T$ gewählt\\
+Das Teilchen wird praktisch an einem Punkt losgelassen und fängt an harmonisch
+zu pendeln.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A1_1a_1.pdf}
+    \caption{Pendel-Trajektorie, wobei die Masse des Teilchens 1 beträgt}
+    \label{fig:A1_1a_1}
+\end{figure}
+
+\noindent
+2.Test:\\
+$\vec{v}(0) \neq \vec{0}$ und $\vec{v}(0) \nparallel \vec{r}(0)  \implies \vec{r}(0) = (1,2,3)^T$ und $\vec{v}(0) = (1,1,1)^T$ gewählt\\
+Da das Teilchen dieses Mal einen Anfangsimpuls besitzt, bewegt es sich auf einer
+Ellipse.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A1_1a_2.pdf}
+    \caption{Elliptische Trajektorie, wobei die Masse des Teilchens 1 beträgt}
+    \label{fig:A1_1a_2}
+\end{figure}
+\noindent
+Da in beiden Fällen keine Dämpfung vorliegt, ist die Trajektorie immer die gleiche.
+Somit werden ältere Wegpunkten von Neueren überlagert (weshalb man keine dunkle Punkte mehr sehen kann).
+
+\subsection*{b)}
+Damit die Schrittweite $h$ der Toleranzgrenze von $\left|\vec{r}_{0}-\vec{r}_{i}\right|<10^{-5}$ bei $i=10$ Schwingungen genügt, muss $h$ in der Größenornung von $10^{-8}$ liegen.
+
+\subsection*{c)}
+Als nächstes wird die Energieerhaltung des 1.Tests aus Aufgabenteil a) überprüft.
+Für einen harmonischen Oszillator gilt:
+\begin{equation}
+  E_{\text{ges}} = E_{\text{pot}} + E_{\text{kin}}
+  = \frac{1}{2} m \omega^{2} \hat{x}^{2} + \frac{1}{2} m \hat{v}^{2}
+  = const.
+\end{equation}
+\noindent
+In Abbildung \ref{fig:A1_1c} ist die relative Gesamtenergie zu jedem Zeitschritt aufgetragen.
+Um die Änderung der Gesamtenergie deutlicher zu machen, wird jeder Wert
+von dem Anfangswert $E_{\text{ges}}(t=0)$ abgezogen. Es ist deutlich eine sinus förmige Bewegung zu erkennen, welche nicht für eine Energieerhaltung spricht.
+Vermutlich wurde das RK-Verfahren nicht sauber genug implementiert.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A1_1c.pdf}
+    \caption{Energieerhaltung eines Teilchens mit eier Masse von eins}
+    \label{fig:A1_1c}
+\end{figure}
+
+\section*{Aufgabe 2: Adams-Bashforth-Verfahren}
+\subsection*{a)}
+Das Adams-Bashforth-Verfahren für die Bewegungsgleichung
+
+\begin{equation*}
+  \ddot{x}=-x-\alpha \dot{x}
+\end{equation*}
+\noindent und verschiedene Fälle für $\alpha$ werden untersucht. Dabei werden
+zunächst vier Anfangspunkte mittels der in Aufgabe 1 implementierten RK-Methode
+bestimmt.\\
+Für den Fall das $\alpha > 0$ ist, zeigt sich in Abbildung \ref{fig:A2_a1}, wie zu erwarten, ein gedämpfter harmonischer Oszillator. Das Teilchen schwingt mit der Zeit in einer immer enger werdenden Kreisbahn.\\
+Ist $\alpha = 0$ liegt ein ungedämpfter harmonischer Oszillator wie in Aufgabe 1 vor. Das Teilchen bewegt sich also immer auf der gleichen Kreisbahn (siehe Abbildung \ref{fig:A2_a2}).\\
+Zuletzt wird $\alpha < 0$ betrachtet, in der eine erzwungende harmonische Oszillation zu erwarten ist. Diese zeigt sich für den Fall $\alpha = -0.1$ in
+Abbildung \ref{fig:A2_a3} gut. Das Teilchen bewegt sich auf einer immer größer werdenden Kreisbahn.\\
+Die mittels dem RK-Verfahren ermittelten vier Startwerte stechen in den jeweiligen Abbildungen besonders hervor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A2_a1.pdf}
+    \caption{Gedämpfer harm. Osz. mit $\alpha = 0.1$}
+    \label{fig:A2_a1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A2_a2.pdf}
+    \caption{Harm. Osz. mit $\alpha = 0$}
+    \label{fig:A2_a2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A2_a3.pdf}
+    \caption{Erzwungener harm. Osz. mit $\alpha = -0.1$}
+    \label{fig:A2_a3}
+\end{figure}
+
+
+\subsection*{b)}
+Als nächstes wird die Energieerhaltung für $\alpha = 0.1$ für $t=20$ Zeitschritten untersucht. Da keine Reibungsenergie berücksichtigt wird,
+sinkt die Gesamtenergie des gedämpften harmonischen Oszillators, wie in Abbildung \ref{fig:A2_b} zu sehen ist, mit der Zeit.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/A2_b.pdf}
+    \caption{Gedämpfer harm. Osz. mit $\alpha = 0.1$}
+    \label{fig:A2_b}
+\end{figure}
+
+
+\end{document}
