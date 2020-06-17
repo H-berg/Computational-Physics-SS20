@@ -7,6 +7,7 @@ double rosenbrock(double x_1, double x_2){
   return (1-x_1)*(1-x_1) + 100*(x_2-x_1*x_1)*(x_2-x_1*x_1);
 }
 
+
 //Definition der Ableitungen für die Komponenten des Gradienten
 double ableitung_1(double x_1, double x_2, double(*f)(double, double)){
   double h = 1e-6;
