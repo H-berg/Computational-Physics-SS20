@@ -12,10 +12,11 @@ Ziel dieser Aufgabe ist die Simulation der paarweisen Lennard-Jones-Wechselwirku
     V \left(r\right) = 4 \left[\left(\frac{1}{r}\right)^{12} - \left(\frac{1}{r}\right)^{6}\right]
 \end{equation*}
 für $N$ identische Teilchen mit Masse $m = 1$. Bei dieser Form des Potentials werden Längen in Einheiten von $\sigma$
-und Energien und $k_B T$ in Einheiten von $\varepsilon$ gemessen. 
+und Energien und $k_B T$ in Einheiten von $\varepsilon$ gemessen.
+Für alle Rechnung wird $k_{B}=1$ gesetzt.
 Es wird ein zweidimensionales System der festen Größe $A = L \times L$ mit
 periodischen Randbedingungen mit  $N = 16$ Teilchen betrachtet. Die Simulation erfolgt für ein mikrokanonisches System,
-es muss daher die Gesamtenergie erhalten sein.
+die Gesamtenergie muss daher erhalten sein.
 
 \subsection*{Initialisierung}
 Vor Beginn der Simulation erfolgt eine Initialisierung. Dazu werden die Teilchen mit gleichmäßigem Abstand auf Plätzen
@@ -36,21 +37,21 @@ die \texttt{Eigen}-Funktion \texttt{MatrixXd::Random} verwendet wird, und dann d
 \begin{equation*}
     \vec{v}_i \rightarrow \vec{v}_i - \frac{1}{N} \sum_{j = 1}^{N} \vec{v}_j \, .
 \end{equation*}
-Zur Bestimmung des Skalierungsfaktors $\alpha$ wird die Temperatur $T$ betrachtet 
+Zur Bestimmung des Skalierungsfaktors $\alpha$ wird die Temperatur $T$ betrachtet und der Zusammenhang zwischen Temperatur und mittlerer kinetischer Energie $\hat{E}_{\text{kin}}=\frac{k_{\text{B}}T}{2}$ pro Freiheitsgrad verwendet
 \begin{align*}
-    T &= \frac{2}{k_B T} \left\langle \frac{\vec{p}^2}{2 m}\right\rangle \\
-      &= \frac{2}{k_B T} \sum_{i = 1}^{N} \frac{\vec{p}_i^2}{2 m} \\
-      &= \frac{2}{k_B T} \sum_{i = 1}^{N} \frac{\alpha^2 \vec{\tilde{p}}_i^2}{2 m} \\
+    T &= 2 \left\langle \frac{\vec{p}^2}{2 m}\right\rangle \\
+      &= \frac{2}{N_f} \sum_{i = 1}^{N} \frac{\vec{p}_i^2}{2 m} \\
+      &= \frac{2}{N_f} \sum_{i = 1}^{N} \frac{\alpha^2 \vec{\tilde{p}}_i^2}{2 m} \\
       &= \alpha^2 \tilde{T} \, ,
 \end{align*}
-wobei $\tilde{T}$ die gewünschte Temperatur ist.
+wobei $T$ die gewünschte Temperatur ist. $\tilde{T}$ ist die Temperatur welche nach den zufälligen Anfangsgeschwindigkeiten vorliegen würde.
 Der Skalierungsfaktor ergibt sich dann durch
 \begin{equation*}
     \alpha = \sqrt{\frac{T}{\tilde{T}}}
 \end{equation*}
 mit 
 \begin{equation*}
-    \tilde{T} = \frac{1}{k_b N_f} \sum_{i = 1}^{N} m v^2 \,
+    \tilde{T} = \frac{1}{N_f} \sum_{i = 1}^{N} m v^2 \,
 \end{equation*}
 mit der Anzahl der Freiheitsgrade $N_f = 2N - 2$ in einem zweidimensionalen System.
 
@@ -59,7 +60,7 @@ In der Äquilibrierungsphase geht das System in den thermodynamischen Gleichgewi
 Begonnen wird mit $T(0) = 0$. Die Lösung der Newton'schen Bewegungsgleichungen erfolgt mit dem Geschwindigkeits-Verlet-Algorithmus
 \begin{align*}
     \vec{r}_{n+1} &= \vec{r}_n + \vec{v}_n + \frac{1}{2} \vec{a}_n h^2 \\
-    \vec{v}_{n+1} &= \vec{v}_n + \frac{h}{2} \left(\vec{a}_{n+1} - \vec{a}_{n}\right)
+    \vec{v}_{n+1} &= \vec{v}_n + \frac{h}{2} \left(\vec{a}_{n+1} + \vec{a}_{n}\right)
 \end{align*}
 mit dem Zeitschritt $h$ für den hier $h \leq 0.01$ verwendet wird. 
 
@@ -70,18 +71,18 @@ Als Cutoff wird $r_c = L/2$ gewählt. Im hier vorliegenden Potential berechnet s
 \end{equation*}
 mit
 \begin{equation*}
-    \vec{L} \left(\vec{n}\right) = \left(n_x L_x, n_y L_y, n_z L_z\right)^{\text{T}}
+    \vec{L} \left(\vec{n}\right) = \left(n_x L_x, n_y L_y\right)^{\text{T}}
 \end{equation*}
 und 
 \begin{equation*}
-    U' \left(\vec{r}\right) = 48 \frac{\vec{r}}{\left|\vec{r}\right|} \left[\left(\frac{1}{r}\right)^{13} - \frac{1}{2} \left(\frac{1}{r}\right)^{7}\right] \, .
+    U' \left(\vec{r}\right) = 48 \frac{\vec{r}}{r} \left[\left(\frac{1}{r}\right)^{13} - \frac{1}{2} \left(\frac{1}{r}\right)^{7}\right] \, .
 \end{equation*}
-In der Funktion \texttt{Funktion einfügen :)} wird verwendet, dass der Betrag der Kraft symmetrisch ist, sodass
+In der Funktion \texttt{Kraft} wird ausgenutzt, dass der Betrag der Kraft symmetrisch ist, sodass
 die Kraft für Teilchen $i$ und $j$ zu $i$ addiert und von $j$ subtrahiert wird. 
 
 Mit den Randbedingungen werden Teilchen, die sich auf einer Seite aus dem Simulationsgebiet $A$ herausbewegen, wieder auf der anderen Seite 
 hineingeführt.
-Für der Implementierung in \texttt{Funktion einfügen :)} wird die \texttt{floor}-Funktion verwendet, mit der sich 
+Für die entsprechende Implementierung in \texttt{Randbedingungen} wird die \texttt{floor}-Funktion verwendet, mit der sich 
 für die $x$- und $y$-Komponenten
 \begin{align*}
     x' &= x - L \cdot \text{floor}\left(\frac{x}{L}\right) \\
@@ -99,7 +100,7 @@ sodass sich der folgende Verlauf ergibt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \includegraphics[width=0.8\textwidth]{Schwerpunkt.pdf}
     \caption{Verlauf der Schwerpunktsgeschwindigkeit in Abhängigkeit von der Zeit $t$.}
     \label{fig:v}
 \end{figure}
@@ -114,7 +115,7 @@ Ihr Verlauf ist in Abbildung \ref{fig:T} dargestellt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \includegraphics[width=0.8\textwidth]{Temperatur.pdf}
     \caption{Verlauf der Temperatur $T$ in Abhängigkeit von der Zeit $t$.}
     \label{fig:T}
 \end{figure}
@@ -133,20 +134,21 @@ in Abbildung \ref{fig:E} dargestellt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \includegraphics[width=0.8\textwidth]{Energie.pdf}
     \caption{Verlauf der potentiellen und kinetischen Energie sowie der Gesamtenergie in Abhängigkeit von der Zeit $t$.}
-    \label{fig:V}
+    \label{fig:E}
 \end{figure}
 \FloatBarrier
 \noindent
-Am Verlauf der Kurve der Gesamtenergie, die hier zusätzlich eingetragen ist und die konstant 0 ist, ist gut erkennbar, dass die Energie im System erhalten ist.
+Am Verlauf der Kurve der Gesamtenergie, die hier zusätzlich eingetragen ist und die konstant ist, ist gut erkennbar, dass die Energie im System erhalten ist.
 Die in Abschnitt \ref{section: Einleitung} aufgestellte Forderung an die Simulation ist somit erfüllt.
+In den Abbildungen ist ebenfalls ersichtlich, dass das System innerhalb weniger Sekunden ($\sim 1$)s äquilibriert und anschließend um einen Gleichgewichtszustand schwankt.
 
 
 \subsection*{Messung}
-Nach der Äquilibrierungsphase wird eine Mittelung über xy (ergänzen :) Zeitschritte durchgeführt und die Temperatur $T$
+Nach der Äquilibrierungsphase wird eine Mittelung über $10^4$ Zeitschritte durchgeführt und die Temperatur $T$
 sowie die Paarkorrelationsfunktion $g(r)$ gemessen.
-Die Messung der Paarkorrelationsfunktion erfolgt über ein Histogramm der Paarabstände für $0 \leq g(\vec{r}) \leq \frac{L}{2}$.
+Die Messung der Paarkorrelationsfunktion erfolgt über ein Histogramm der Paarabstände für $0 \leq r \leq \frac{L}{2}$.
 Dieser Bereich wird in $N_H$ Bins der Länge
 \begin{equation*}
     \Delta r = \frac{L}{2 N_H}
@@ -158,12 +160,13 @@ Die Paarkorrelationsfunktion berechnet sich dann gemäß
     g \left(\vec{r}_L\right) = \frac{\left\langle P_L \right\rangle}{N \rho \Delta V_L}
 \end{equation*}
 mit $\rho =  \frac{N}{V}$ .
-In unserem Programm ist sie in der Funktion \texttt{Funktionsnamen ergänzen :)} implementiert. 
+In unserem Programm ist sie in der Funktion \texttt{Paarkorrelationsfunktion} implementiert. 
+Mit Hilfe der Funktion \texttt{TeilchenInBin} wird die Anzahl der Teilchen in einem Bin ermittelt, wobei auch Bildteilchen berücksichtigt werden.
 
 Die Messung wird nun für $N = 16$ und $L = 8 \sigma$ für die drei verschiedene Anfangstemperaturen 
 \begin{align*}
     T(0) &= 1 \\
-    T(0) &= 0.01 \\
+    T(0) &= 0,01 \\
     T(0) &= 100 
 \end{align*}
 durchgeführt.
@@ -172,7 +175,7 @@ dargestellt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \includegraphics[width=0.8\textwidth]{Korrelation1.pdf}
     \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 1$.}
     \label{fig:p1}
 \end{figure}
@@ -181,8 +184,8 @@ dargestellt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
-    \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 0.01$.}
+    \includegraphics[width=0.8\textwidth]{Korrelation0.01.pdf}
+    \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 0,01$.}
     \label{fig:p2}
 \end{figure}
 \FloatBarrier
@@ -190,18 +193,21 @@ dargestellt.
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \includegraphics[width=0.8\textwidth]{Korrelation100.pdf}
     \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 100$.}
     \label{fig:p3}
 \end{figure}
 \FloatBarrier
 \noindent
-Der Verlauf der Temperatur für die verschiedenen Anfangstemperaturen ist in Abbildungen \ref{fig:t1}, \ref{fig:t2} und \ref{fig:t3}
+Für den Startwert $T=0,01$ sind viele Maxima zu beobachten, was auf eine festen Zustand schließend lässt. 
+Die Korrelationsfunktion fpr $T=1$ weist weniger Maxima auf, was auf eine flüssige Phase hinweist.
+
+Der Verlauf der Temperatur für die verschiedenen Anfangstemperaturen während der Äquilibrieungsphase ist in Abbildungen \ref{fig:t1}, \ref{fig:t2} und \ref{fig:t3} zu sehen
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
-    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 1$.}
+    \includegraphics[width=0.8\textwidth]{Temperatur1.pdf}
+    \caption{Verlauf der Temperatur $T$ während der Äquilibrierungsphase für die Anfangstemperatur $T(0) = 1$.}
     \label{fig:p1}
 \end{figure}
 \FloatBarrier
@@ -209,8 +215,8 @@ Der Verlauf der Temperatur für die verschiedenen Anfangstemperaturen ist in Abb
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
-    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 0.01$.}
+    \includegraphics[width=0.8\textwidth]{Temperatur0.01.pdf}
+    \caption{Verlauf der Temperatur $T$ während der Äquilibrierungsphase für die Anfangstemperatur $T(0) = 0,01$.}
     \label{fig:p2}
 \end{figure}
 \FloatBarrier
@@ -218,11 +224,45 @@ Der Verlauf der Temperatur für die verschiedenen Anfangstemperaturen ist in Abb
 \FloatBarrier
 \begin{figure}[H]
     \centering
-    %\includegraphics[width=0.5\textwidth]{.pdf}
-    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 100$.}
+    \includegraphics[width=0.8\textwidth]{Temperatur100.pdf}
+    \caption{Verlauf der Temperatur $T$ während der Äquilibrierungsphase für die Anfangstemperatur $T(0) = 100$.}
     \label{fig:p3}
 \end{figure}
 \FloatBarrier
 \noindent
+
+Nach der Äquilibrieungsphase schwankt die Temperatur um einen Mittelwert.
+Für die über den oben genannten Zeitraum gemittelten Temperaturen ergeben sich die Werte
+\begin{align*}
+\hat{T}_{0.01} &= 0,71 \\
+\hat{T}_{1} &=1,49  \\
+\hat{T}_{100} &= 2,42 \cdot 10^{45} \, .
+\end{align*}
+Da die Gesamtenergie des Systems erhalten ist und stets eine Erhöhung der Temperatur zu beobachten ist, scheint die kinetische Energie in der Äquilibrierungsphase zuzunehmen, während die potentielle Energie abnimmt.
+Wie zu erwarten ist dies auch in den folgenen Plots \ref{fig:E1} und ref{fig:E2} zu sehen, in welchen der Energieverlauf während der Äquilibrierungsphase für die ersten beiden Starttemperaturen dargestellt ist.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie0.01.pdf}
+    \caption{Verlauf der potentiellen und kinetischen Energie sowie der Gesamtenergie in Abhängigkeit von der Zeit $t$ für $T(t=0)=0,01$ .}
+    \label{fig:E1}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie1.pdf}
+    \caption{Verlauf der potentiellen und kinetischen Energie sowie der Gesamtenergie in Abhängigkeit von der Zeit $t$ für $T(t=0)=1$ ..}
+    \label{fig:E2}
+\end{figure}
+\FloatBarrier
+\noindent
+Offensichtlich gibt es für den Startwert $T=100$ einige Probleme. 
+Dies kann an Fehlern in der Implementierung liegen, wohl möglich kommt es dort für hohe Temperaturen zu numerischen Problemen.
+Ein weiterer möglicher Grund könnten die Randbedingungen sein. 
+Angenommen für $T=100$ befindet sich der Zustand in einer gasförmigen Phase, dann ist der Abstand zwischen den Teilchen entsprechend groß.
+Allerdings sind die Maße der betrachteten Fläche lediglich 8 mal so groß wie der Durchmesser der Teilchen, was das Auseinanderstreben der Teilchen verhindert, da diese dem System wieder hinzugefügt werden, wenn sie es auf einer Seite verlassen.
+Somit ist dieses System möglicherweise nicht für diese Starttemperatur anwendbar.
 
 \end{document}
