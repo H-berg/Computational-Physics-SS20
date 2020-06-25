@@ -1,0 +1,228 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Molekulardynamik-Simulation eines $2d$-Lennard-Jones-Fluids}
+\subsection*{Lennard-Jones-Wechselwirkung}
+\label{section: Einleitung}
+Ziel dieser Aufgabe ist die Simulation der paarweisen Lennard-Jones-Wechselwirkung
+\begin{equation*}
+    V \left(r\right) = 4 \left[\left(\frac{1}{r}\right)^{12} - \left(\frac{1}{r}\right)^{6}\right]
+\end{equation*}
+für $N$ identische Teilchen mit Masse $m = 1$. Bei dieser Form des Potentials werden Längen in Einheiten von $\sigma$
+und Energien und $k_B T$ in Einheiten von $\varepsilon$ gemessen. 
+Es wird ein zweidimensionales System der festen Größe $A = L \times L$ mit
+periodischen Randbedingungen mit  $N = 16$ Teilchen betrachtet. Die Simulation erfolgt für ein mikrokanonisches System,
+es muss daher die Gesamtenergie erhalten sein.
+
+\subsection*{Initialisierung}
+Vor Beginn der Simulation erfolgt eine Initialisierung. Dazu werden die Teilchen mit gleichmäßigem Abstand auf Plätzen
+\begin{equation*}
+    \vec{r} \left(0\right) = \frac{L}{8} \left(1 + 2 n, 1 + 2 m\right) \qquad m, n \in \left\{0, \dots, 3\right\}
+\end{equation*}
+in der Box $\left[0, L\right] \times \left[0, L\right]$ verteilt.
+Für die Anfangsgeschwindigkeiten gilt die Bedingung, dass die Schwerpunktsgeschwindigkeit zu Anfang gleich 0 ist,
+also
+\begin{equation*}
+    \sum_{i = 1}^{N} \vec{v}_i \left(0\right) = \vec{0} \, ,
+\end{equation*}
+da nur die Relativgeschwindigkeiten der einzelnen Teilchen zueinander physikalisch interessant sind.
+Zudem wird eine Umskalierung $\vec{v} \rightarrow \alpha \vec{v}$ der Geschwindigkeiten implementiert, damit bei einer
+beliebigen Anfangstemperatur $T \left(t = 0\right)$ begonnen werden kann. 
+Dazu werden die Anfangsgeschwindigkeiten zuerst zufällig gewählt, wozu
+die \texttt{Eigen}-Funktion \texttt{MatrixXd::Random} verwendet wird, und dann die Schwerpunktsgeschwindigkeit abgezogen
+\begin{equation*}
+    \vec{v}_i \rightarrow \vec{v}_i - \frac{1}{N} \sum_{j = 1}^{N} \vec{v}_j \, .
+\end{equation*}
+Zur Bestimmung des Skalierungsfaktors $\alpha$ wird die Temperatur $T$ betrachtet 
+\begin{align*}
+    T &= \frac{2}{k_B T} \left\langle \frac{\vec{p}^2}{2 m}\right\rangle \\
+      &= \frac{2}{k_B T} \sum_{i = 1}^{N} \frac{\vec{p}_i^2}{2 m} \\
+      &= \frac{2}{k_B T} \sum_{i = 1}^{N} \frac{\alpha^2 \vec{\tilde{p}}_i^2}{2 m} \\
+      &= \alpha^2 \tilde{T} \, ,
+\end{align*}
+wobei $\tilde{T}$ die gewünschte Temperatur ist.
+Der Skalierungsfaktor ergibt sich dann durch
+\begin{equation*}
+    \alpha = \sqrt{\frac{T}{\tilde{T}}}
+\end{equation*}
+mit 
+\begin{equation*}
+    \tilde{T} = \frac{1}{k_b N_f} \sum_{i = 1}^{N} m v^2 \,
+\end{equation*}
+mit der Anzahl der Freiheitsgrade $N_f = 2N - 2$ in einem zweidimensionalen System.
+
+\subsection*{Äquilibrierung}
+In der Äquilibrierungsphase geht das System in den thermodynamischen Gleichgewichtszustand über.
+Begonnen wird mit $T(0) = 0$. Die Lösung der Newton'schen Bewegungsgleichungen erfolgt mit dem Geschwindigkeits-Verlet-Algorithmus
+\begin{align*}
+    \vec{r}_{n+1} &= \vec{r}_n + \vec{v}_n + \frac{1}{2} \vec{a}_n h^2 \\
+    \vec{v}_{n+1} &= \vec{v}_n + \frac{h}{2} \left(\vec{a}_{n+1} - \vec{a}_{n}\right)
+\end{align*}
+mit dem Zeitschritt $h$ für den hier $h \leq 0.01$ verwendet wird. 
+
+Da $m = 1$ gewählt wird, ergibt sich die Beschleunigung $\vec{a}$ direkt aus der berechneten Kraft $\vec{F}$.
+Als Cutoff wird $r_c = L/2$ gewählt. Im hier vorliegenden Potential berechnet sich die Kraft auf ein Teilchen $i$ gemäß
+\begin{equation*}
+    \vec{F}_{i} = - \sum_{i \neq j} \sum_{\vec{n} \in \mathbb{Z}^3} \frac{\vec{r}_{ij} + \vec{L} \vec{n}}{\left|\vec{r}_{ij} + \vec{L} \vec{n}\right|} U'\left(\left|\vec{r}_{ij} + \vec{L} \vec{n}\right|\right)
+\end{equation*}
+mit
+\begin{equation*}
+    \vec{L} \left(\vec{n}\right) = \left(n_x L_x, n_y L_y, n_z L_z\right)^{\text{T}}
+\end{equation*}
+und 
+\begin{equation*}
+    U' \left(\vec{r}\right) = 48 \frac{\vec{r}}{\left|\vec{r}\right|} \left[\left(\frac{1}{r}\right)^{13} - \frac{1}{2} \left(\frac{1}{r}\right)^{7}\right] \, .
+\end{equation*}
+In der Funktion \texttt{Funktion einfügen :)} wird verwendet, dass der Betrag der Kraft symmetrisch ist, sodass
+die Kraft für Teilchen $i$ und $j$ zu $i$ addiert und von $j$ subtrahiert wird. 
+
+Mit den Randbedingungen werden Teilchen, die sich auf einer Seite aus dem Simulationsgebiet $A$ herausbewegen, wieder auf der anderen Seite 
+hineingeführt.
+Für der Implementierung in \texttt{Funktion einfügen :)} wird die \texttt{floor}-Funktion verwendet, mit der sich 
+für die $x$- und $y$-Komponenten
+\begin{align*}
+    x' &= x - L \cdot \text{floor}\left(\frac{x}{L}\right) \\
+    y' &= y - L \cdot \text{floor}\left(\frac{y}{L}\right) 
+\end{align*}
+ergibt.
+
+Während der Äquilibrierung werden nun verschiedene Observablen als Funktion der Zeit berechnet.
+\subsubsection*{Schwerpunktsgeschwindigkeit $\vec{v}$}
+Die Schwerpunktsgeschwindigkeit berechnet sich in jedem Zeitschritt gemäß
+\begin{equation*}
+    \vec{v} = \frac{1}{N} \sum_{i = 1}^{N} \vec{v}_i \, 
+\end{equation*}
+sodass sich der folgende Verlauf ergibt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \caption{Verlauf der Schwerpunktsgeschwindigkeit in Abhängigkeit von der Zeit $t$.}
+    \label{fig:v}
+\end{figure}
+\FloatBarrier
+\noindent
+\subsubsection*{Temperatur $T$}
+Die Temperatur berechnet sich nach
+\begin{equation*}
+    T = \frac{2 E_{kin}}{N_f} \, .
+\end{equation*}
+Ihr Verlauf ist in Abbildung \ref{fig:T} dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \caption{Verlauf der Temperatur $T$ in Abhängigkeit von der Zeit $t$.}
+    \label{fig:T}
+\end{figure}
+\FloatBarrier
+\noindent
+\subsubsection*{Potentielle Energie $E_{pot}$ und kinetische Energie $E_{kin}$}
+Der Verlauf der potentiellen Energie 
+\begin{equation*}
+    E_{pot}(t) = \sum_{i < j-1}^{N} V\left(\left|\vec{r}_i - \vec{r}_j\right|\right)
+\end{equation*}
+ist zusammen mit dem Verlauf der kinetischen Energie
+\begin{equation*}
+   E_{kin}(t) = \sum_{i = 1}^{N} \frac{\vec{v}_i^2}{2} \, ,
+\end{equation*}
+in Abbildung \ref{fig:E} dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.8\textwidth]{.pdf}
+    \caption{Verlauf der potentiellen und kinetischen Energie sowie der Gesamtenergie in Abhängigkeit von der Zeit $t$.}
+    \label{fig:V}
+\end{figure}
+\FloatBarrier
+\noindent
+Am Verlauf der Kurve der Gesamtenergie, die hier zusätzlich eingetragen ist und die konstant 0 ist, ist gut erkennbar, dass die Energie im System erhalten ist.
+Die in Abschnitt \ref{section: Einleitung} aufgestellte Forderung an die Simulation ist somit erfüllt.
+
+
+\subsection*{Messung}
+Nach der Äquilibrierungsphase wird eine Mittelung über xy (ergänzen :) Zeitschritte durchgeführt und die Temperatur $T$
+sowie die Paarkorrelationsfunktion $g(r)$ gemessen.
+Die Messung der Paarkorrelationsfunktion erfolgt über ein Histogramm der Paarabstände für $0 \leq g(\vec{r}) \leq \frac{L}{2}$.
+Dieser Bereich wird in $N_H$ Bins der Länge
+\begin{equation*}
+    \Delta r = \frac{L}{2 N_H}
+\end{equation*} 
+eingeteilt. Zu jedem Zeitpunkt $t$ wird dann 
+für jeden Bin $L$ die Anzahl $P_L(t)$ der Teilchen, die sich in diesem Bin befinden, ermittelt.
+Die Paarkorrelationsfunktion berechnet sich dann gemäß
+\begin{equation*}
+    g \left(\vec{r}_L\right) = \frac{\left\langle P_L \right\rangle}{N \rho \Delta V_L}
+\end{equation*}
+mit $\rho =  \frac{N}{V}$ .
+In unserem Programm ist sie in der Funktion \texttt{Funktionsnamen ergänzen :)} implementiert. 
+
+Die Messung wird nun für $N = 16$ und $L = 8 \sigma$ für die drei verschiedene Anfangstemperaturen 
+\begin{align*}
+    T(0) &= 1 \\
+    T(0) &= 0.01 \\
+    T(0) &= 100 
+\end{align*}
+durchgeführt.
+Der Verlauf der Paarkorrelationsfunktion für die verschiedenen Anfangstemperaturen ist in Abbildungen \ref{fig:p1}, \ref{fig:p2} und \ref{fig:p3}
+dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 1$.}
+    \label{fig:p1}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 0.01$.}
+    \label{fig:p2}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Paarkorrelationsfunktion $g(\vec{r})$ für die Anfangstemperatur $T(0) = 100$.}
+    \label{fig:p3}
+\end{figure}
+\FloatBarrier
+\noindent
+Der Verlauf der Temperatur für die verschiedenen Anfangstemperaturen ist in Abbildungen \ref{fig:t1}, \ref{fig:t2} und \ref{fig:t3}
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 1$.}
+    \label{fig:p1}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 0.01$.}
+    \label{fig:p2}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    %\includegraphics[width=0.5\textwidth]{.pdf}
+    \caption{Verlauf der Temperatur $T$ für die Anfangstemperatur $T(0) = 100$.}
+    \label{fig:p3}
+\end{figure}
+\FloatBarrier
+\noindent
+
+\end{document}
