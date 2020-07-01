@@ -1,0 +1,52 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Monte-Carlo-Simulation eines einzelnen Spins}
+Bei dieser Aufgabe wird eine MC-Simulation mittels des Metropolis-Alogrithmus
+eines einzelnen Spins $\sigma$ = $\pm$1 mit der Energie
+\begin{equation*}
+  \mathcal{H}=-\sigma H
+\end{equation*}
+\noindent
+im äußeren Magnetfeld $H$ implementiert.\\
+\\
+Folgende Schritte werden dabei gemacht:
+
+\begin{enumerate}
+  \item Der Spin $\sigma$ wird auf +1 gesetzt. Alternativ könnte man hier auch
+  den Anfangsspin zufällig wählen.
+  \item Die Energiedifferenz $\Delta E = \Delta\sigma H$ mit $\Delta\sigma = \pm$2
+  und die Übergangswahrscheinlichkeit $p = \exp{\bigl(-\beta\Delta E\bigr)}$ werden bestimmt.
+    \begin{itemize}
+      \item Falls $\Delta E \leq$ 0, dann wird der Spin-Flip akzeptiert, da dieser
+      Zustand energetisch günstiger ist.
+      \item Falls $\Delta E >$ 0, dann wird die Übergangswahrscheinlichkeit $p$
+      mit einer gleichverteilten Vorschlagswarhscheinlichkeit $V \in [0,1]$
+      verglichen. Ist $p \leq V$, so wird der Spin-Flip akzeptiert. Ansonsten
+      wird der Zustand beigehalten.
+    \end{itemize}
+  \item Die Magnetisierung $m$ wird aktualisiert.
+  \item Wiederholung der Schritte (2) bis (3).
+\end{enumerate}
+\noindent
+Die numerisch bestimmte Magnetisierung $m$ wird zuletzt auf die betragsmäßig
+größten Magnetisierung $m_{\text{max}}$ normiert. In Abbildung \ref{fig:tanh}
+wird das numerische und das analytische Ergebnis:
+$m = \tanh{\bigl(\beta H \bigr)}$ mit
+$\beta = \frac{1}{k_{\text{b}}T}$ = 1 dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Abbildungen/tanh.pdf}
+    \caption{Vergleich zwischen dem analytischen und dem numerischen Ergebnis für
+    die Magnetisierung $m$ eines einzelnen Spins. Der Metropolis-Algorithmus
+    wird mit $\SI{e4}{}$ Werten für das äußere Magnetfeld $H$, mit jeweils
+    $\SI{e6}{}$ Schritten durchgeführt.}
+    \label{fig:tanh}
+\end{figure}
+
+
+\end{document}
