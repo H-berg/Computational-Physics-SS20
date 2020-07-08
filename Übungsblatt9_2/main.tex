@@ -1,0 +1,112 @@
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 3: Simulated Annealing}
+Gegeben seien N 2-dimensionale Ortsvektoren $\vec{r}_i$ und eine initiale Permutation $\pi_0$ der Indizes der Ortsvektoren.
+Die geschlossene Weglänge einer Permutation ist gegeben durch
+\begin{equation*}
+L(\pi) = \sum_{i=2}^N |\vec{r}_{\pi(i)}-\vec{r}_{\pi(i-1)}| + |\vec{r}_{\pi(1)}-\vec{r}_{\pi(N)}|\, .
+\end{equation*}
+Ziel der Aufgabe ist es jene Permutation zu finden, die die Weglänge minimiert.
+
+\subsection*{1. Implementierung des Algorithmus}
+Das Problem, welches in der Vorlesung als \textit{Travelling Salesman Problem} behandelt wurde, wird mit einer Variante des Metropolis Algorithmus gelöst.
+\begin{itemize}
+\item Halte Anfangs- und Endpunkt fest
+\item Starte mit beliebiger Strecke und hoher fiktiver Temperatur $T_\text{start}$
+\item Wiederhole S mal: Tausche zwei zufällige Ortsvektoren und berechnet Streckenänderung $\Delta L$
+\begin{itemize}
+\item[*] $\Delta L \leq 0 \, \rightarrow$ Annahme der Veränderung
+\item[*] $\Delta L > 0 \, \rightarrow$ ziehe $P \in (0,\,1)$ und nehme an wenn $P < e^{-\beta\Delta L}$
+\end{itemize}
+\item Verringere Temperatur um den Dämpfungsfaktor $d\in (0,\, 1)$ bis Endtemperatur $T_\text{end}$ erreicht
+\end{itemize}
+
+\subsection*{2. Initialisierung der Startkonfiguration}
+Die Ortsvektoren werden wie in Abbildung \ref{fig:3_1} angeordnet.
+Diese Reihenfolge entspricht zugleich der des kürzesten Weges.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Initialisierung.pdf}
+    \caption{Verteilung der Ortsvektoren mit der kürzesten Strecke von $17$.}
+    \label{fig:3_1}
+\end{figure}
+\FloatBarrier
+\noindent
+
+Um die initiale Startpermutation zu erhalten wird der zu \ref{fig:3_1} gehörende Permutationsvektor zufällig angeordnet.
+Die erhaltene Startkonfiguration ist in Abbildung \ref{fig:3_2} dargestellt.
+
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Startkonfig.pdf}
+    \caption{Startkonfiguration, Start- und Endpunkt wurden festgehalten. Diese entsprechen also den gleichen wie in Abbildung \ref{fig:3_2}.
+    Die Strecke beträgt hier $208.965$.}
+    \label{fig:3_2}
+\end{figure}
+\FloatBarrier
+\noindent
+
+\subsection*{3. Berechnung der optimalen Permutation}
+Der Algorithmus sollte für die in $2.$ berechnete Startkonfiguration angewendet werden.
+Dazu wurden die Parameter
+\begin{align*}
+T_\text{start} &= 10 \\
+T_\text{end} &= 10^{-2} \\
+d &\in \{0.9,\,0.99,\,0.999\} \\
+S &\in \{10,\,100,\,1000\,10000\} 
+\end{align*}
+verwendet.
+Die sich ergebenen Strecken sind in den Plots \ref{fig:3_3} \ref{fig:3_4} \ref{fig:3_5} \ref{fig:3_6} zu sehen.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Strecke_d_0.9_S_10.pdf}
+    \caption{Die optimale Strecke welche sich nach der Ausführung des Algorithmus mit $d=0.9$ und $S=10$ ergibt. 
+    Die Gesamtstrecke beträgt $106.71$. Sie wurde also im Vergleich zur Startkonfiguration um circa $49\%$ um reduziert.}
+    \label{fig:3_3}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Strecke_d_0.9_S_1000.pdf}
+    \caption{Die optimale Strecke welche sich nach der Ausführung des Algorithmus mit $d=0.9$ und $S=1000$ ergibt. 
+    Die Gesamtstrecke beträgt $44.19$. Sie wurde also im Vergleich zur Startkonfiguration um circa $79\%$ um reduziert.}
+    \label{fig:3_4}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Strecke_d_0.99_S_1000.pdf}
+    \caption{Die optimale Strecke welche sich nach der Ausführung des Algorithmus mit $d=0.99$ und $S=1000$ ergibt. 
+    Die Gesamtstrecke beträgt $30.87$. Sie wurde also im Vergleich zur Startkonfiguration um circa $85\%$ um reduziert.}
+    \label{fig:3_5}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Strecke_d_0.999_S_10000.pdf}
+    \caption{Die optimale Strecke welche sich nach der Ausführung des Algorithmus mit $d=0.999$ und $S=10000$ ergibt. 
+    Die Gesamtstrecke beträgt $20.29$. Sie wurde also im Vergleich zur Startkonfiguration um circa $90\%$ um reduziert.}
+    \label{fig:3_6}
+\end{figure}
+\FloatBarrier
+\noindent
+Bei dem letzten Plot beträgt die Abweichung der minimalen Strecke noch circa $19\%$ von der optimalen Strecke.
+Auffällig ist, dass die Strecke sich bereits für geringe Parameter $d=0.9$ $S=10$ stark reduziert.
+Jedoch kann für sehr viele Vorschläge $S$ und sehr schwache Dämpfung $d$ immer noch nicht die optimale Strecke erreicht werden.
+Das liegt vermutlich daran, dass zu Beginn des Algorithmus die Annahmewahrscheinlichkeit noch sehr hoch ist, während sie gegen Ende sehr klein wird.
+So ist die Wahrscheinlichkeit eine weitere Optimierung zu erzielen, sobald ein Zustand wie in Abbildung \ref{fig:3_6} erreicht ist, sehr gering, da die Wahrscheinlichkeit genau die beiden richtigen Ortsvektoren auszuwählen verschwindend klein ist ($\frac{1}{90^2} \approx 0.012\%$).
+
+\end{document}
