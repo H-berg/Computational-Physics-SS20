@@ -4,6 +4,141 @@
 
 \maketitle
 
+\section*{Simulation des zweidimensionalen Ising-Modells}
+In dieser Aufgabe mit dem Metropolis-Algorithmus als Monte-Carlo-Methode ein Ising-Modell in zwei Dimensionen 
+ohne externes Magnetfeld simuliert. Das Modell hat die Energie
+\begin{equation*}
+    \mathcal{H} = - \sum_{i, j \, \text{n.N.}} \sigma_i \sigma_j \, ,
+\end{equation*}
+wobei nur über nächste Nachbarn summiert wird. Es wird ein zweidimensionales System der Größe $A = L \times L$
+mit periodischen Randbedingungen, die in der Funktion \texttt{randbedingungen} implementiert sind, betrachtet. 
+Hier verwendet wird ein System der Größe $100 \times 100$ mit entsprechend 10000 Teilchen.
+
+\subsubsection*{Initialisierung}
+Vor Beginn der Messung erfolgt eine Initialisierung. Die Teilchen werden dazu den Gitterplätzen zugeordnet, was 
+in der Funktion \texttt{initialisierung} implementiert ist. Die Teilchen werden in einer $3 \times N$-Matrix gespeichert, 
+wobei die ersten beiden Zeilen jeweils die $x$- und $y$-Koordinate und die dritte Zeile die Spinausrichtung 
+angibt. Die Spins können zu Beginn entweder vollständig geordnet sein, oder eine zufällige Ausrichtung haben,
+was über den Übergabewert \texttt{ordnung} gesteuert wird. 
+
+\subsubsection*{Äquilibrierung}
+Dem System werden mit dem Metropolis-Algorithmus Spin-Flips angeboten, was in der Funktion \texttt{aequilibrierung}
+und \texttt{metropolis}
+implementiert ist. Nach einer Äquilibrierungsphase mit $10^5$ Schritten werden für die drei Temperaturen $k_\text{B}T = 1.5$,
+$k_\text{B}T = 2.27$ und $k_\text{B}T = 3$ Momentaufnahmen erstellt, die in Abbildung \ref{fig:2_moment_1}, \ref{fig:2_moment_2} 
+und \ref{fig:2_moment_3} dargestellt sind.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{momentaufnahme_1.pdf}
+    \caption{Momentaufnahme des Systems bei $k_\text{B}T = 1.5$.}
+    \label{fig:2_moment_1}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{momentaufnahme_2.pdf}
+    \caption{Momentaufnahme des Systems bei $k_\text{B}T \approx 2.27$.}
+    \label{fig:2_moment_2}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{momentaufnahme_3.pdf}
+    \caption{Momentaufnahme des Systems bei $k_\text{B}T = 3$.}
+    \label{fig:2_moment_3}
+\end{figure}
+\FloatBarrier
+\noindent
+In Abbildung \ref{fig:2_moment_1} ist deutlich die spontane ferromagnetische Ordnung sichtbar, die sich bei $T < T_c$
+ausbildet, da nahezu alle Spins in eine Richtung zeigen.
+Abbildung \ref{fig:2_moment_2} zeigt, dass sich im Bereich der kritischen Temperatur $T_c$ Bereiche ausbilden, 
+in denen die Spins entweder nach oben oder nach unten zeigen. Bei höherer Temperatur $T > T_c$ wird das System
+aufgrund thermischer Fluktuationen ungeordnet, wie in Abbildung \ref{fig:2_moment_3} ersichtlich ist. 
+
+Anschließend wird in der Äquilibrierungsphase die mittlere Energie pro Spin als Funktion der Simulationszeit gemessen
+\begin{equation*}
+    e(t) = \frac{E(t)}{N} = \frac{\langle \mathcal{H} \rangle}{N} \, .
+\end{equation*} 
+Die Ergebnisse für geordnete Anfangsbedingungen sind in Abbildung \ref{fig:2_energie_geordnet} dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie_Equi_geordnet.pdf}
+    \caption{Mittlere Energie pro Spin als Funktion der Simulationszeit $t$ in der Äquilibrierungsphase mit geordneter Spinausrichtung als Anfangsbedingung.}
+    \label{fig:2_energie_geordnet}
+\end{figure}
+\FloatBarrier
+\noindent
+Dasselbe wird zusätzlich für völlig ungeordnete Spins als Anfangsbedingung durchgeführt. Die Ergebnisse sind 
+in Abbildung \ref{fig:2_energie_1_ungeordnet} dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie_Equi.pdf}
+    \caption{Mittlere Energie pro Spin als Funktion der Simulationszeit $t$ in der Äquilibrierungsphase mit zufälliger Spinausrichtung als Anfangsbedingung.}
+    \label{fig:2_energie_ungeordnet}
+\end{figure}
+\FloatBarrier
+\noindent
+Die Anfangsbedingungen beeinflussen die Simulation offenbar stark. Unabhängig von den Anfangsbedingungen 
+äquilibriert das System, sobald es einen annähernd konstanten Wert erreicht, also nach etwa 4-5 Zeitschritten bei zufälliger 
+Ausrichtung der Spins als Anfangsbedingung und etwa 3 Zeitschritten bei geordneten Anfangsbedigungen, jedoch mehr für $k_\text{B}T = 3$.
+Da bei dieser Simulation die Äquilibrierungszeit etwas zu kurz gewählt wurde, wie in den Abbildungen auch ersichtlich ist,
+sind diese Ergebnisse noch einmal im Anhang \ref{sec:anhang} aus einer Simulation mit 6400 Teilchen dargestellt.
+
+\subsubsection*{Messung}
+Nun wird die Zeit nach der Äquilibrierungsphase betrachtet, wobei als Anfangsbedingung eine zufällige Spinausrichtung
+gewählt wird. Die Messung erfolgt nun nach jedem Sweep. 
+Pro Sweep wird jedem Spin im Mittel einmal ein Spinflip angeboten. Gemessen wird die Magnetisierung
+\begin{equation*}
+    \langle m \rangle = \left\langle \frac{1}{N} \sum_i \sigma_i\right\rangle \, ,
+\end{equation*}
+und der Betrag der Magnetisierung
+\begin{equation*}
+    \langle | m | \rangle = \left\langle \frac{1}{N} \left| \sum_i \sigma_i \right| \right\rangle \, ,
+\end{equation*}
+pro Spin sowie die Energie für die gleichen Temperaturen wird bei der in den vorherigen Messungen. Die Ergebnisse sind in Abbildung 
+\ref{fig:energie}, \ref{fig:magnetisierung} und \ref{fig:betrag_magnetisierung} dargestellt.
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie.pdf}
+    \caption{Mittlere Energie pro Spin als Funktion der Simulationszeit $t$.}
+    \label{fig:energie}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Magnetisierung.pdf}
+    \caption{Magnetisierung pro Spin als Funktion der Simulationszeit $t$.}
+    \label{fig:magnetisierung}
+\end{figure}
+\FloatBarrier
+\noindent
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Betrag_Magnetisierung.pdf}
+    \caption{Betrag der Magnetisierung pro Spin als Funktion der Simulationszeit $t$.}
+    \label{fig:betrag_magnetisierung}
+\end{figure}
+\FloatBarrier
+\noindent
+Alle Messungen sind in der Funktion \texttt{spinflip} implementiert.
+In Abbildung \ref{fig:magnetisierung} und \ref{fig:betrag_magnetisierung} ist deutlich der Phasenübergang bei $T = T_c$ sichtbar, 
+da die Magnetisierung stark zwischen den Werten für $k_\text{B}T = 1.5$ und $k_\text{B}T = 3$ fluktuiert. 
+Außerdem ist erkennbar, dass unterhalb der kritischen Temperatur eine nicht-verschwindende Magentisierung auftritt, 
+da sich das System spontan magnetisch ordnet.
+Der Verlauf der Energie in Abbildung \ref{fig:energie} zeigt, dass die Energie nach der kurzen Äquilibrierungsphase 
+um einen konstanten Wert fluktuiert. 
+
 \section*{Aufgabe 3: Simulated Annealing}
 Gegeben seien N 2-dimensionale Ortsvektoren $\vec{r}_i$ und eine initiale Permutation $\pi_0$ der Indizes der Ortsvektoren.
 Die geschlossene Weglänge einer Permutation ist gegeben durch
@@ -109,4 +244,22 @@ Jedoch kann für sehr viele Vorschläge $S$ und sehr schwache Dämpfung $d$ imme
 Das liegt vermutlich daran, dass zu Beginn des Algorithmus die Annahmewahrscheinlichkeit noch sehr hoch ist, während sie gegen Ende sehr klein wird.
 So ist die Wahrscheinlichkeit eine weitere Optimierung zu erzielen, sobald ein Zustand wie in Abbildung \ref{fig:3_6} erreicht ist, sehr gering, da die Wahrscheinlichkeit genau die beiden richtigen Ortsvektoren auszuwählen verschwindend klein ist ($\frac{1}{90^2} \approx 0.012\%$).
 
+\section*{Anhang}
+\label{sec:anhang}
+\subsubsection*{Äuilibrierungsphase in der Simulation mit 6400 Teilchen}
+\FloatBarrier
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie_Equi_geordnet_80.pdf}
+    \caption{Mittlere Energie pro Spin als Funktion der Simulationszeit $t$ in der Äquilibrierungsphase mit geordneter Spinausrichtung als Anfangsbedingung für 6400 Teilchen.}
+    \label{fig:anhang_1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Energie_Equi_80.pdf}
+    \caption{Mittlere Energie pro Spin als Funktion der Simulationszeit $t$ in der Äquilibrierungsphase mit zufälliger Spinausrichtung als Anfangsbedingung für 6400 Teilchen.}
+    \label{fig:anhang_2}
+\end{figure}
+\FloatBarrier
+\noindent
 \end{document}
